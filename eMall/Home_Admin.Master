@@ -1,0 +1,56 @@
+<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Home_Admin.Master.cs"
+    Inherits="eMall.Admin" %>
+
+<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
+<%@ Register TagName="ucLeftMenu" TagPrefix="uc" Src="~/UserControls/UC_LeftMenu_Admin.ascx" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <title>Super Shope.. super shopping ..!</title>
+    <link href="styles/w4d.css" rel="stylesheet" type="text/css" />
+    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="form1" runat="server" method="post" enctype="multipart/form-data">
+    <div align="center">
+        <asp:ScriptManager ID="Scriptmanager1" runat="server">
+        </asp:ScriptManager>
+        <div id="maincolor" style="width:95%">
+            <div id="mainpadding">
+                <div id="adminMenu" class="adminHMenuBar">
+                    <table style="width:100%;">
+                        <tr>
+                            <td style="width: 100%;" align="right">
+                                <a href="../Setting.aspx?id=1">Category</a> &nbsp;&nbsp; <a href="../Setting.aspx?id=2">
+                                    SubCategory</a> &nbsp;&nbsp; <a href="../Setting.aspx?id=3">Items</a> &nbsp;&nbsp;
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div id="contentarea" style="min-height: 300px">
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                        <tr>
+                            <td valign="top" id="boxbg" style="margin-left: 25px;">
+                                <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+                                </asp:ContentPlaceHolder>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div id="footer">
+                    <p>
+                        About Us&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp; Customer Service&nbsp;&nbsp;&nbsp;
+                        |&nbsp;&nbsp;Contact Us</p>
+                    <p>
+                        © 2011 Tuvian. All Rights Reserved.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    </form>
+</body>
+</html>
