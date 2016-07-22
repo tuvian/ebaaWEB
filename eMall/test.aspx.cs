@@ -37,8 +37,7 @@ namespace eMall
                     "Error" + ex.Message), true);
             }
         }
-
-
+        
         protected void btnSend_2_Click(object sender, EventArgs e)
         {
             try
@@ -51,9 +50,7 @@ namespace eMall
                     "Error" + ex.Message), true);
             }
         }
-
-
-
+        
         public string SendNotification(string deviceId, string message)
         {
             try

@@ -71,6 +71,11 @@
                                         </ul>--%>
                                 </div>
                             </div>
+                            <div class='<%= PwdMenu %>'>
+                                <div style="margin-top: 3px; margin-left: 2px; margin-right: 2px;">
+                                    <a href="password.aspx" class='<%= PwdLink %>'>Password</a>
+                                </div>
+                            </div>
                             <div class='<%= HomeMenu %>'>
                                 <div style="margin-top: 3px;">
                                     <a href="teachers.aspx" class='<%= HomeLink %>'>Teacher</a>
@@ -116,9 +121,9 @@
                                     <a href="studentlogin.aspx" class='<%= StudentLoginLink %>'>Student Login</a>
                                 </div>
                             </div>
-                            <div class='<%= StudentLoginMenu %>'>
+                            <div class='<%= NotificationMenu %>'>
                                 <div style="margin-top: 3px; margin-left: 2px; margin-right: 2px;">
-                                    <a href="notification.aspx" class='<%= StudentLoginLink %>'>Notification</a>
+                                    <a href="notification.aspx" class='<%= NotificationLink %>'>Notification</a>
                                 </div>
                             </div>
                         </div>

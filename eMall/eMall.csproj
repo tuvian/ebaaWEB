@@ -127,6 +127,7 @@
     <Content Include="login.aspx" />
     <Content Include="msHome.aspx" />
     <Content Include="notification.aspx" />
+    <Content Include="password.aspx" />
     <Content Include="Plugins\AjaxControlToolkit.dll" />
     <Content Include="school.aspx" />
     <Content Include="school_logo\DP3.png" />
@@ -258,6 +259,13 @@
     </Compile>
     <Compile Include="notification.aspx.designer.cs">
       <DependentUpon>notification.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="password.aspx.cs">
+      <DependentUpon>password.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="password.aspx.designer.cs">
+      <DependentUpon>password.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Default.aspx.cs">

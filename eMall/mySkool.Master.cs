@@ -177,6 +177,32 @@ namespace eMall
             set { _studentloginLink = value; }
         }
 
+        private string _notificationMenu = "menubutton";
+        public string NotificationMenu
+        {
+            get { return _notificationMenu; }
+            set { _notificationMenu = value; }
+        }
+        private string _notificationLink = "link";
+        public string NotificationLink
+        {
+            get { return _notificationLink; }
+            set { _notificationLink = value; }
+        }
+
+        private string _pwdMenu = "menubutton";
+        public string PwdMenu
+        {
+            get { return _pwdMenu; }
+            set { _pwdMenu = value; }
+        }
+        private string _pwdLink = "link";
+        public string PwdLink
+        {
+            get { return _pwdLink; }
+            set { _pwdLink = value; }
+        }
+
         #endregion
 
         protected void lbLogout_Click(object sender, EventArgs e)

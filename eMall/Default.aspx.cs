@@ -33,15 +33,50 @@ namespace eMall
         protected void btnLogin_Click1(object sender, EventArgs e)
         {
             DataTable dtTblLogin = new DataTable();
+            DataTable dtTblEmployee = new DataTable();
+
             dtTblLogin = (new eMallBL()).getLogin(txtUserName.Text, txtPassword.Text.Trim(), "");
             if (dtTblLogin.Rows.Count > 0 && (dtTblLogin.Rows[0]["Type"].ToString() == "1" || dtTblLogin.Rows[0]["Type"].ToString() == "2"))
             {
+                int loginID = 0;
+                int.TryParse(dtTblLogin.Rows[0]["ID"].ToString(),out loginID);
+                if (dtTblLogin.Rows[0]["type"].ToString() == "4")
+                {
+                    dtTblEmployee = (new eMallBL()).searchStudentByLoginID(loginID);
+                    if (dtTblEmployee.Rows.Count > 0)
+                    {
+                        Session["employee_name"] = dtTblEmployee.Rows[0]["first_name"].ToString();
+                        Session["employee_id"] = dtTblEmployee.Rows[0]["ID"].ToString();                        
+                    }
+                }
+                else if (dtTblLogin.Rows[0]["type"].ToString() == "3")
+                {
+                    dtTblEmployee = (new eMallBL()).searchTeacherByLoginID(loginID);
+                    if (dtTblEmployee.Rows.Count > 0)
+                    {
+                        Session["employee_name"] = dtTblEmployee.Rows[0]["name"].ToString();
+                        Session["employee_id"] = dtTblEmployee.Rows[0]["ID"].ToString();
+                    }
+                }
+                else if (dtTblLogin.Rows[0]["type"].ToString() == "2")
+                {
+                    Session["employee_name"] = "School Admin";
+                    Session["employee_id"] = dtTblLogin.Rows[0]["ID"].ToString();
+                }
+                else if (dtTblLogin.Rows[0]["type"].ToString() == "1")
+                {
+                    Session["employee_name"] = "Super Admin";
+                    Session["employee_id"] = dtTblLogin.Rows[0]["ID"].ToString();
+                }
+                else
+                    Session["employee_name"] = "";
+
+
                 Session["username"] = dtTblLogin.Rows[0]["UserName"].ToString();
                 Session["password"] = dtTblLogin.Rows[0]["Password"].ToString();
                 Session["usertype"] = dtTblLogin.Rows[0]["Type"].ToString();
                 Session["user_id"] = dtTblLogin.Rows[0]["ID"].ToString();
                 Session["school_id"] = dtTblLogin.Rows[0]["school_id"].ToString();
-                //Server.Transfer("msHome.aspx");
                 Response.Redirect("teachers.aspx");
             }
             else

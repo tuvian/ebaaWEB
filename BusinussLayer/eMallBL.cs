@@ -8,7 +8,7 @@ using System.Data;
 using eMall;
 using System.Web.UI;
 
-using System.Web;
+using System.Web.Security;
 using System.Web.UI.WebControls;
 //using System.Net.Mail;
 //using System.Web.Mail;
@@ -16,6 +16,7 @@ using System.Configuration;
 using System.Data.Odbc;
 using System.Net;
 using System.Net.Mail;
+using System.IO;
 
 namespace BusinussLayer
 {
@@ -41,7 +42,7 @@ namespace BusinussLayer
             eMallDA objDA = new eMallDA();
             string sqlQuery = string.Empty;
             //ID, Name, Description
-            sqlQuery = "INSERT INTO  error_log (page,description,date) VALUES('" + description + "')";
+            sqlQuery = "INSERT INTO  error_log (page,description,date) VALUES('" + Page.Replace("'", "''").Trim() + "','" + description.Replace("'", "''").Trim() + "',now())";
             objDA.ExecuteNonQuery(sqlQuery);
 
             Alert.Show(description);
@@ -53,7 +54,7 @@ namespace BusinussLayer
             eMallDA objDA = new eMallDA();
             string sqlQuery = string.Empty;
             //ID, Name, Description
-            sqlQuery = "INSERT INTO  error_log (page,description,date) VALUES('" + page + "','" + description + "',now())";
+            sqlQuery = "INSERT INTO  error_log (page,description,date) VALUES('" + page.Replace("'", "''").Trim() + "','" + description.Replace("'", "''").Trim() + "',now())";
             objDA.ExecuteNonQuery(sqlQuery);
 
             Alert.Show(description);
@@ -64,7 +65,7 @@ namespace BusinussLayer
             eMallDA objDA = new eMallDA();
             string sqlQuery = string.Empty;
             //ID, Name, Description
-            sqlQuery = "INSERT INTO  errorlog (Description,Date) VALUES('" + description + "',now())";
+            sqlQuery = "INSERT INTO  error_log (description,date) VALUES('" + description.Replace("'", "''").Trim() + "',now())";
             objDA.ExecuteNonQuery(sqlQuery);
 
             //Alert.Show(description);
@@ -1270,6 +1271,24 @@ namespace BusinussLayer
             }
         }
 
+        public DataTable searchTeacherByLoginID(int loginID)
+        {
+            try
+            {
+                eMallDA objDA = new eMallDA();
+                DataTable resultTable = new DataTable();
+                string sqlQuery = "SELECT t.id,t.school_id,t.name " +
+                    "FROM teacher t INNER JOIN login lg ON t.id = lg.user_id AND lg.type = 3 " +
+                    "WHERE lg.id = " + loginID;
+                return resultTable;
+            }
+            catch (Exception ex)
+            {
+                logErrors("searchSchool", ex.GetType().ToString(), ex.Message);
+                return null;
+            }
+        }
+
         #endregion
 
         #region Events
@@ -1460,6 +1479,25 @@ namespace BusinussLayer
             catch (Exception)
             {
                 return true;
+            }
+        }
+
+        public DataTable searchStudentByLoginID(int loginID)
+        {
+            try
+            {
+                eMallDA objDA = new eMallDA();
+                DataTable resultTable = new DataTable();
+                string sqlQuery = "SELECT t.id,t.student_id,t.school_id,t.first_name " +
+                    " FROM  student t INNER JOIN login lg ON t.ID = lg.user_id AND lg.type = 4 " +
+                    " WHERE lg.id =  " + loginID;
+                resultTable = objDA.ExecuteDataTable(sqlQuery);
+                return resultTable;
+            }
+            catch (Exception ex)
+            {
+                logErrors("searchTeachers", ex.GetType().ToString(), ex.Message);
+                return null;
             }
         }
 
@@ -1774,6 +1812,8 @@ namespace BusinussLayer
 
         #endregion
 
+        #region Common Services
+
         public string isReferenceExist(int ID, string column, string tables)
         {
             string msg = "NO";
@@ -1804,6 +1844,9 @@ namespace BusinussLayer
             }
         }
 
+        #endregion
+
+        #region Notification
         public DataTable searchNotifications(int school_id)
         {
             try
@@ -1909,9 +1952,162 @@ namespace BusinussLayer
             }
             catch (Exception ex)
             {
-                logErrors("SendEmailForTesting", ex.Message);
+                //("SendEmailForTesting", ex.Message);
                 throw ex;
             }
+        }
+
+        public string sendPushNotification(string fname, string fid, string ftype, string file, string sub, string msg, int school_id, string teacherClasses, string studentClasses)
+        {
+            eMallDA objDA = new eMallDA();
+            DataTable resultTable = new DataTable();
+            DataTable APItable = new DataTable();
+
+            //string sqlQuery = "SELECT GROUP_CONCAT(em.google_regid SEPARATOR ',') as regids FROM " +
+            //    "(SELECT s.email,s.class_id,l.google_regid from student s INNER JOIN class c ON s.class_id = c.id INNER JOIN login l ON l.user_id = s.id AND l.type = 4 WHERE s.class_id IN (" + studentClasses + ") UNION  " +
+            //    " SELECT t.email,t.class_id,l.google_regid FROM teacher t INNER JOIN class c ON t.class_id = c.id INNER JOIN login l ON l.user_id = t.id AND l.type = 4 WHERE t.class_id IN (" + teacherClasses + ") ) as em;  ";
+
+            string sqlQuery = "SELECT s.email,s.class_id,l.google_regid from student s INNER JOIN class c ON s.class_id = c.id INNER JOIN login l ON l.user_id = s.id AND l.type = 4 WHERE s.class_id IN (" + studentClasses + ") UNION  " +
+                " SELECT t.email,t.class_id,l.google_regid FROM teacher t INNER JOIN class c ON t.class_id = c.id INNER JOIN login l ON l.user_id = t.id AND l.type = 3 WHERE t.class_id IN (" + teacherClasses + ") ";
+            resultTable = objDA.ExecuteDataTable(sqlQuery);
+
+            string googleSenderID = "";
+            string googleAppID = "";
+
+            string sqlQueryAPIKey = "SELECT google_sender_id, google_app_id FROM school WHERE id = " + school_id;
+            APItable = objDA.ExecuteDataTable(sqlQueryAPIKey);
+            if (APItable.Rows.Count > 0)
+            {
+                googleSenderID = APItable.Rows[0]["google_sender_id"].ToString();
+                googleAppID = APItable.Rows[0]["google_app_id"].ToString();
+            }
+
+            string notStatus = "success";
+            for (int i = 0; i < resultTable.Rows.Count; i++)
+            {
+                string regid = resultTable.Rows[i]["google_regid"].ToString();
+                if (regid != null && regid != "" && googleSenderID != "" && googleAppID != "")
+                    notStatus = sendPushNot(fname, fid, ftype, file, sub, msg, regid, googleSenderID, googleAppID);
+            }
+            return "success";
+        }
+
+        private string sendPushNot(string fname, string fid, string ftype, string file, string sub, string msg, string regid, string senderID, string googleAPPID)
+        {
+            try
+            {
+                string GoogleAppID = googleAPPID;
+                var SENDER_ID = senderID;
+                string devider = ":RBAIJSDUR:";
+                var value = "NT" + devider + System.DateTime.Now + devider + fname + devider + fid + devider + ftype + devider + sub + devider + file + devider + msg;
+                WebRequest tRequest;
+                tRequest = WebRequest.Create("https://android.googleapis.com/gcm/send");
+                tRequest.Method = "post";
+                tRequest.ContentType = "application/x-www-form-urlencoded;charset=UTF-8";
+                tRequest.Headers.Add(string.Format("Authorization: key={0}", GoogleAppID));
+
+                tRequest.Headers.Add(string.Format("Sender: id={0}", SENDER_ID));
+
+                string postData = "collapse_key=score_update&time_to_live=108&delay_while_idle=1&data.message=" + value + "&data.time=" +
+                System.DateTime.Now.ToString() + "&registration_id=" + regid + "";
+                Console.WriteLine(postData);
+                Byte[] byteArray = Encoding.UTF8.GetBytes(postData);
+                tRequest.ContentLength = byteArray.Length;
+
+                Stream dataStream = tRequest.GetRequestStream();
+                dataStream.Write(byteArray, 0, byteArray.Length);
+                dataStream.Close();
+
+                WebResponse tResponse = tRequest.GetResponse();
+
+                dataStream = tResponse.GetResponseStream();
+
+                StreamReader tReader = new StreamReader(dataStream);
+
+                String sResponseFromServer = tReader.ReadToEnd();
+
+                tReader.Close();
+                dataStream.Close();
+                tResponse.Close();
+                return sResponseFromServer;
+            }
+            catch (Exception ex)
+            {
+                //ScriptManager.RegisterStartupScript(Page, this.GetType(), "alert", string.Format("alert('{0}');",
+                //        "Error :" + ex.Message), true);
+                return "Error" + ex.Message;
+            }
+        }
+
+        #endregion
+        
+        public DataTable searchPwd(int school_id)
+        {
+            try
+            {
+                eMallDA objDA = new eMallDA();
+                DataTable resultTable = new DataTable();
+                string sqlQuery = "SELECT p.id, p.school_id, p.password, p.is_taken from password p Where p.school_id = " + school_id + " AND is_taken = 0";
+                resultTable = objDA.ExecuteDataTable(sqlQuery);
+                return resultTable;
+            }
+            catch (Exception ex)
+            {
+                logErrors("searchBus", ex.GetType().ToString(), ex.Message);
+                return null;
+            }
+
+        }
+
+        public string deletePassword(int ID)
+        {
+            try
+            {
+                eMallDA objDA = new eMallDA();
+                string sqlQuery = string.Empty;
+                sqlQuery = "DELETE FROM password WHERE ID = " + ID;
+                objDA.ExecuteNonQuery(sqlQuery);
+                return "success";
+            }
+            catch (Exception ex)
+            {
+                return "error : " + ex.Message;
+            }
+        }
+
+        public string generatePwd(string prefix, int count, int school_id)
+        {
+            try
+            {
+                eMallDA objDA = new eMallDA();
+                string sqlQuery = string.Empty;
+                for (int i = 0; i < count; i++)
+                {
+                    string password = prefix + CreateRandomPassword();
+                    sqlQuery = "INSERT INTO password (school_id,password,is_taken) VALUES(" + school_id + ",'" + password + "',0);";
+                    objDA.ExecuteNonQuery(sqlQuery);
+                }
+                
+                return "success";
+            }
+            catch (Exception ex)
+            {
+                return "error : " + ex.Message;
+            }
+        }
+
+        public static string CreateRandomPassword()
+        {
+            //string _allowedChars = "0123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ";
+            string _allowedChars = "0123456789";
+            Random randNum = new Random();
+            char[] chars = new char[6];
+            int allowedCharCount = _allowedChars.Length;
+            for (int i = 0; i < 6; i++)
+            {
+                chars[i] = _allowedChars[(int)((_allowedChars.Length) * randNum.NextDouble())];
+            }
+            return new string(chars);
         }
     }
 }

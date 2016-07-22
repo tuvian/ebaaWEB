@@ -262,6 +262,14 @@ namespace Entity
 
         #endregion
 
+        public class password
+        {
+            public int ID { get; set; }
+            public int school_id { get; set; }
+            public string pwd { get; set; }
+            public int is_taken { get; set; }
+        }
+
         #region shope
         public class ItemCatagory
         {
