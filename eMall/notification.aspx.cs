@@ -29,8 +29,46 @@ namespace eMall
             {
                 //fillSearchScoolCodes();
                 //fillNotifications();
+                fuTeacher.Attributes["onchange"] = "UploadFile(this)";
                 fillSchoolCodes();
                 fillClassForStudents();
+            }
+        }
+
+        protected void Upload(object sender, EventArgs e)
+        {
+            try
+            {
+                if (fuTeacher.HasFile)
+                {
+                    try
+                    {
+                        ////if (fuTeacher.PostedFile.ContentType == "image/jpeg" || fuTeacher.PostedFile.ContentType == "image/png")
+                        ////{
+                        if (fuTeacher.PostedFile.ContentLength < 1024000)
+                        {
+                            string filename = Path.GetFileName(fuTeacher.FileName);
+                            fuTeacher.SaveAs(Server.MapPath("~/notification_file/") + filename);
+                            //lblItemImage.Text = filename;
+                            hdItemImage.Value = filename;
+                            lblFileName.Text = filename;
+                            //imgItem.ImageUrl = "student_image/" + filename;
+                        }
+                        else
+                            lblError.Text = "Upload status: The file has to be less than 1mb!";
+                        //}
+                        //else
+                        //    lblError.Text = "Upload status: Only JPEG/PNG files are accepted!";
+                    }
+                    catch (Exception ex)
+                    {
+                        lblError.Text = "Upload status: The file could not be uploaded. The following error occured: " + ex.Message;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                eMallBL.logErrors("UC_FileUploader", ex.GetType().ToString(), ex.Message);
             }
         }
 

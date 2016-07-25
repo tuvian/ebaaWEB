@@ -17,6 +17,7 @@ using System.Data.Odbc;
 using System.Net;
 using System.Net.Mail;
 using System.IO;
+using System.Web;
 
 namespace BusinussLayer
 {
@@ -1413,7 +1414,7 @@ namespace BusinussLayer
                             "class_id,wilayath,waynumber,middle_name,family_name,gender,status,image_path,school_id,bus_id) VALUES(" + "'" + objStudent.studentID + "','" + objStudent.firstname + "','" + objStudent.mobile + "','" + objStudent.email + "','" + objStudent.fathername + "','" + objStudent.mothername + "','" + objStudent.contactemail + "'," +
                             "'" + objStudent.contactmobile + "','" + objStudent.nationality + "','" + objStudent.present_address + "','" + objStudent.permenant_address + "'," +
                             "" + objStudent.class_id + ",'" + objStudent.wilayath + "','" + objStudent.waynumber + "','" + objStudent.middlename + "','" + objStudent.familyname + "','" +
-                            "" + objStudent.gender + "','" + status + "','" + objStudent.image_path + "'," + objStudent.studentID + "," + objStudent.busID + ")";
+                            "" + objStudent.gender + "','" + status + "','" + objStudent.image_path + "'," + objStudent.schoolId + "," + objStudent.busID + ")";
                 }
                 else
                 {
@@ -1999,16 +2000,14 @@ namespace BusinussLayer
                 string GoogleAppID = googleAPPID;
                 var SENDER_ID = senderID;
                 string devider = ":RBAIJSDUR:";
-                var value = "NT" + devider + System.DateTime.Now + devider + fname + devider + fid + devider + ftype + devider + sub + devider + file + devider + msg;
+                var value = "NT" + devider + System.DateTime.Now + devider + fname + devider + fid + devider + ftype + devider + sub + devider + file + devider + msg;                
                 WebRequest tRequest;
                 tRequest = WebRequest.Create("https://android.googleapis.com/gcm/send");
                 tRequest.Method = "post";
                 tRequest.ContentType = "application/x-www-form-urlencoded;charset=UTF-8";
                 tRequest.Headers.Add(string.Format("Authorization: key={0}", GoogleAppID));
-
                 tRequest.Headers.Add(string.Format("Sender: id={0}", SENDER_ID));
-
-                string postData = "collapse_key=score_update&time_to_live=108&delay_while_idle=1&data.message=" + value + "&data.time=" +
+                string postData = "collapse_key=score_update&time_to_live=108&delay_while_idle=1&data.message=" + HttpUtility.UrlEncode(value) + "&data.time=" +
                 System.DateTime.Now.ToString() + "&registration_id=" + regid + "";
                 Console.WriteLine(postData);
                 Byte[] byteArray = Encoding.UTF8.GetBytes(postData);

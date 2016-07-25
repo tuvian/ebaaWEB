@@ -13,93 +13,57 @@ namespace eMall {
     public partial class test {
         
         /// <summary>
-        /// txtDeviceID control.
+        /// Label4 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtDeviceID;
+        protected global::System.Web.UI.WebControls.Label Label4;
         
         /// <summary>
-        /// txtMsg control.
+        /// ddlSchoolCode control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtMsg;
+        protected global::System.Web.UI.WebControls.DropDownList ddlSchoolCode;
         
         /// <summary>
-        /// txtSenderID control.
+        /// RequiredFieldValidator6 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtSenderID;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator6;
         
         /// <summary>
-        /// txtAppID control.
+        /// Label3 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtAppID;
+        protected global::System.Web.UI.WebControls.Label Label3;
         
         /// <summary>
-        /// btnSebd control.
+        /// chkClassForTeacher control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnSebd;
+        protected global::System.Web.UI.WebControls.CheckBoxList chkClassForTeacher;
         
         /// <summary>
-        /// txtRegID_2 control.
+        /// lblSelectedClassForTeacher control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtRegID_2;
-        
-        /// <summary>
-        /// txtMsg_2 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtMsg_2;
-        
-        /// <summary>
-        /// txtSender_2 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtSender_2;
-        
-        /// <summary>
-        /// txtAppID_2 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtAppID_2;
-        
-        /// <summary>
-        /// btnSend_2 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        //protected global::System.Web.UI.WebControls.Button btnSend_2;
+        protected global::System.Web.UI.WebControls.Label lblSelectedClassForTeacher;
     }
 }

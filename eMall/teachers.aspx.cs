@@ -149,6 +149,11 @@ namespace eMall
                     ddlClass.DataTextField = "classname";
                     ddlClass.DataValueField = "id";
                     ddlClass.DataBind();
+                    
+                    chkClassForTeacher.DataSource = dtTbl;
+                    chkClassForTeacher.DataTextField = "classname";
+                    chkClassForTeacher.DataValueField = "id";
+                    chkClassForTeacher.DataBind();
                 }
 
                 // Insert 'Select'

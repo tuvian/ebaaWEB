@@ -176,7 +176,7 @@
                         </tr>
                         <tr>
                             <td align="left" class="adminLabel">
-                                <asp:Label runat="server" ID="Label10" Text="File Name"></asp:Label>
+                                <asp:Label runat="server" ID="Label10" Text="Attached File Name"></asp:Label>
                             </td>
                             <td align="left">
                                 <%--<asp:Label runat="server" ID="lblItemImage" Font-Bold="true" />--%><br />
@@ -185,10 +185,10 @@
                                 <%--<asp:Image runat="server" ID="imgItem" Width="120" Height="100" />--%>
                             </td>
                         </tr>
-
+                        
                         <tr>
                             <td align="left" class="adminLabel">
-                                <asp:Label runat="server" ID="Label1" Text="Upload Image"></asp:Label>
+                                <asp:Label runat="server" ID="Label1" Text="Attach File"></asp:Label>
                             </td>
                             <td align="left">
                                 <asp:FileUpload runat="server" ID="fuTeacher" />
@@ -252,5 +252,15 @@
             }
         }
     </script>
+
+    <script type="text/javascript">
+        document.getElementById("<%=btnUpload.ClientID %>").style.display = 'none';
+        function UploadFile(fileUpload) {
+            if (document.getElementById("<%=fuTeacher.ClientID %>").value != '') {
+                document.getElementById("<%=btnUpload.ClientID %>").click();
+            }
+        }
+    </script>
+
 
 </asp:Content>

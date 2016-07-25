@@ -4,7 +4,41 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
-    <div class="adminEditContent">
+
+    <table width="100%">
+        <tr>
+            <td align="left" class="adminLabel">
+                <asp:Label runat="server" ID="Label4" Text="School Code"></asp:Label>
+            </td>
+            <td align="left">
+                <asp:DropDownList ID="ddlSchoolCode" runat="server" CssClass="adminCombo" AutoPostBack="true" OnSelectedIndexChanged="ddlSchoolCode_SelectedIndexChanged">
+                </asp:DropDownList>
+                <asp:RequiredFieldValidator ID="RequiredFieldValidator6" runat="server" ControlToValidate="ddlSchoolCode"
+                    ErrorMessage="Select a school" ValidationGroup="items" ToolTip="Please select a School" InitialValue="0" />
+            </td>
+        </tr>
+        <tr>
+            <td align="left" class="adminLabel">
+                <asp:Label runat="server" ID="Label3" Text="Teachers In the Class :"></asp:Label>
+            </td>
+            <td align="left">
+                <div style="width: 200px; height: 150px; padding: 2px; overflow: auto; border: 1px solid #ccc;">
+                    <asp:CheckBoxList class="BodyTxt" ID="chkClassForTeacher" runat="server"></asp:CheckBoxList>
+                </div>
+                <asp:Label ID="lblSelectedClassForTeacher" runat="server"></asp:Label>
+            </td>
+        </tr>
+    </table>
+
+
+
+
+
+
+
+
+
+    <%--<div class="adminEditContent">
         <table style="display: block; background-color: White; margin: 0px; padding: 2px; width: 100%; font-size: 11px; width: 100%;"
             cellpadding="5" cellspacing="2">
             <tr>
@@ -64,5 +98,5 @@
                     <asp:Button runat="server" ID="btnSend_2" Text="SEND_Not_2" OnClick="btnSend_2_Click" /></td>
             </tr>
         </table>
-    </div>
+    </div>--%>
 </asp:Content>

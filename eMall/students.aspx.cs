@@ -382,7 +382,7 @@ namespace eMall
             //txtNationality.Text = "";
             //imgItem.ImageUrl = "";
             chkActive.Checked = Convert.ToBoolean(GridItems.DataKeys[e.NewEditIndex].Values["status"]);
-            imgItem.ImageUrl = "teacher_image/" + hdItemImage.Value;
+            imgItem.ImageUrl = "student_image/" + hdItemImage.Value;
             ////from data bound
             //txtItemCode.Text = GridItems.Rows[e.NewEditIndex].Cells[0].Text;
             //txtName.Text = GridItems.Rows[e.NewEditIndex].Cells[1].Text;
@@ -444,7 +444,7 @@ namespace eMall
                     {
                         if (fuTeacher.PostedFile.ContentType == "image/jpeg" || fuTeacher.PostedFile.ContentType == "image/png")
                         {
-                            if (fuTeacher.PostedFile.ContentLength < 512000)
+                            if (fuTeacher.PostedFile.ContentLength < 1024000)
                             {
                                 string filename = Path.GetFileName(fuTeacher.FileName);
                                 fuTeacher.SaveAs(Server.MapPath("~/student_image/") + filename);
@@ -453,7 +453,7 @@ namespace eMall
                                 imgItem.ImageUrl = "student_image/" + filename;
                             }
                             else
-                                lblError.Text = "Upload status: The file has to be less than 500 kb!";
+                                lblError.Text = "Upload status: The file has to be less than 1 mb!";
                         }
                         else
                             lblError.Text = "Upload status: Only JPEG/PNG files are accepted!";
@@ -545,7 +545,7 @@ namespace eMall
                 //txtNationality.Text = "";
                 //imgItem.ImageUrl = "";
                 chkActive.Checked = Convert.ToBoolean(GridItems.DataKeys[index].Values["status"]);
-                imgItem.ImageUrl = "teacher_image/" + hdItemImage.Value;
+                imgItem.ImageUrl = "student_image/" + hdItemImage.Value;
                 //fillSchoolCodes();
                 ddlSchoolCode.SelectedValue = GridItems.DataKeys[index].Values["school_id"].ToString();
                 fillClass();

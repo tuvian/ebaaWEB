@@ -162,6 +162,20 @@
                                             ErrorMessage="* Required" ValidationGroup="items" ToolTip="Please select a School" InitialValue="0" />
                                     </td>
                                 </tr>
+
+                                <tr>
+                                    <td align="left" class="adminLabel">
+                                        <asp:Label runat="server" ID="Label15" Text="Teachers In the Class :"></asp:Label>
+                                    </td>
+                                    <td align="left">
+                                        <div style="width: 200px; height: 150px; padding: 2px; overflow: auto; border: 1px solid #ccc;">
+                                            <asp:CheckBoxList class="BodyTxt" ID="chkClassForTeacher" runat="server"></asp:CheckBoxList>
+                                        </div>
+                                        <asp:Label ID="lblSelectedClassForTeacher" runat="server"></asp:Label>
+                                    </td>
+                                </tr>
+
+
                                 <tr>
                                     <td align="left" class="adminLabel">
                                         <asp:Label runat="server" ID="Label14" Text="Standard"></asp:Label>
