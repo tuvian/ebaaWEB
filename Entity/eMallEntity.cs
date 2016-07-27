@@ -6,7 +6,7 @@ using System.Text;
 namespace Entity
 {
     public class eMallEntity
-    {   
+    {
         #region MySchool
         public class teacher
         {
@@ -30,6 +30,8 @@ namespace Entity
             public string class_std { get; set; }
             public string class_division { get; set; }
             public string class_name { get; set; }
+            public List<String> class_ids { get; set; }
+
 
         }
 
@@ -56,7 +58,7 @@ namespace Entity
             public string wilayath { get; set; }
             public string waynumber { get; set; }
         }
-        
+
         public class schooluser
         {
             public int ID { get; set; }
@@ -240,11 +242,11 @@ namespace Entity
             public string std { get; set; }
             public string division { get; set; }
             public bool status { get; set; }
-            
+
         }
         #endregion
 
-        #region bus 
+        #region bus
 
         public class bus
         {
@@ -253,11 +255,11 @@ namespace Entity
             public int driver_id { get; set; }
             public string bus_number { get; set; }
             public string rout { get; set; }
-            public string driver { get; set; }            
+            public string driver { get; set; }
             public string mobile { get; set; }
             public string search_operator { get; set; }
 
-            
+
         }
 
         #endregion
@@ -306,7 +308,7 @@ namespace Entity
             public string Specefications { get; set; }
             public int userID { get; set; }
         }
-        
+
         //ID, Name, Address, CityID, Phone, Email, ContactPerson, MapDiscription
         public class ShopEntity
         {

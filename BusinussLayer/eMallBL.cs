@@ -845,45 +845,55 @@ namespace BusinussLayer
             eMallDA objDA = new eMallDA();
             string returnValue = string.Empty;
             string sqlQuery = string.Empty;
-            //try
-            //{
-            if (objTeacher.ID == 0)
-            {
-                //ID, Name, Description
-                sqlQuery = "INSERT INTO teacher (code, name, mobile, email, nationality, qualification, status, present_address, permenant_address, " +
-                        "department_id,designation_id,image_path, school_id, class_id) VALUES(" +
-                        "'" + objTeacher.code + "','" + objTeacher.name + "','" + objTeacher.mobile + "','" + objTeacher.email + "','" + objTeacher.nationality + "'," +
-                        "'" + objTeacher.qualification + "'," + objTeacher.status + ",'" + objTeacher.present_address + "','" + objTeacher.permenant_address + "'," +
-                        "" + objTeacher.department_id + "," + objTeacher.designation_id + ",'" + objTeacher.image_path + "'," + objTeacher.school_id + "," + objTeacher.class_id + ")";
-            }
-            else
-            {
-                sqlQuery = "UPDATE teacher SET code = '" + objTeacher.code + "', name = '" + objTeacher.name + "', "
-                + "mobile = '" + objTeacher.mobile + "', school_id = " + objTeacher.school_id + ", class_id = " + objTeacher.class_id + ", "
-                + "email = '" + objTeacher.email + "', nationality = '" + objTeacher.nationality + "', status = " + objTeacher.status + ", "
-                + "qualification = '" + objTeacher.qualification + "', present_address = '" + objTeacher.present_address + "', "
-                + "department_id = " + objTeacher.department_id + ", designation_id = " + objTeacher.designation_id + ", "
-                    //+ "Image = '" + objItems.Image + "', IsActive = " + objItems.IsActive + ", ModifiedDate = now() , "
-                + "permenant_address = '" + objTeacher.permenant_address + "', image_path = '" + objTeacher.image_path + "'"
-                + "WHERE ID = " + objTeacher.ID;
+            string sqlQueryClass = string.Empty;
 
-                //sqlQuery = "UPDATE items SET ItemCode = '" + objItems.ItemCode + "', Name = '" + objItems.Name + "', "
-                //    + "Description = '" + objItems.Description + "', "
-                //    + "Overview = '" + objItems.OverView + "', Price = " + objItems.Price + ", HasOffer = " + objItems.HasOffer + ", "
-                //    + "OfferPrice = " + objItems.OfferPrice + ", OfferDescription = '" + objItems.OfferDescription + "', "
-                //    + "CategoryID = " + objItems.CategoryID + ", SubCategoryID = " + objItems.SubCategoryID + ", "
-                //    + "Image = '" + objItems.Image + "', IsActive = " + objItems.IsActive + ", ModifiedDate = now() , "
-                //    + "Specefications = '" + objItems.Specefications + "' "
-                //    + "WHERE ID = " + objItems.ID;
+            try
+            {
+                if (objTeacher.ID == 0)
+                {
+                    //ID, Name, Description
+                    sqlQuery = "INSERT INTO teacher (code, name, mobile, email, nationality, qualification, status, present_address, permenant_address, " +
+                            "department_id,designation_id,image_path, school_id, class_id) VALUES(" +
+                            "'" + objTeacher.code + "','" + objTeacher.name + "','" + objTeacher.mobile + "','" + objTeacher.email + "','" + objTeacher.nationality + "'," +
+                            "'" + objTeacher.qualification + "'," + objTeacher.status + ",'" + objTeacher.present_address + "','" + objTeacher.permenant_address + "'," +
+                            "" + objTeacher.department_id + "," + objTeacher.designation_id + ",'" + objTeacher.image_path + "'," + objTeacher.school_id + "," + objTeacher.class_id + ")";
+                }
+                else
+                {
+                    sqlQuery = "UPDATE teacher SET code = '" + objTeacher.code + "', name = '" + objTeacher.name + "', "
+                    + "mobile = '" + objTeacher.mobile + "', school_id = " + objTeacher.school_id + ", class_id = " + objTeacher.class_id + ", "
+                    + "email = '" + objTeacher.email + "', nationality = '" + objTeacher.nationality + "', status = " + objTeacher.status + ", "
+                    + "qualification = '" + objTeacher.qualification + "', present_address = '" + objTeacher.present_address + "', "
+                    + "department_id = " + objTeacher.department_id + ", designation_id = " + objTeacher.designation_id + ", "
+                        //+ "Image = '" + objItems.Image + "', IsActive = " + objItems.IsActive + ", ModifiedDate = now() , "
+                    + "permenant_address = '" + objTeacher.permenant_address + "', image_path = '" + objTeacher.image_path + "'"
+                    + "WHERE ID = " + objTeacher.ID;
 
+                    //sqlQuery = "UPDATE items SET ItemCode = '" + objItems.ItemCode + "', Name = '" + objItems.Name + "', "
+                    //    + "Description = '" + objItems.Description + "', "
+                    //    + "Overview = '" + objItems.OverView + "', Price = " + objItems.Price + ", HasOffer = " + objItems.HasOffer + ", "
+                    //    + "OfferPrice = " + objItems.OfferPrice + ", OfferDescription = '" + objItems.OfferDescription + "', "
+                    //    + "CategoryID = " + objItems.CategoryID + ", SubCategoryID = " + objItems.SubCategoryID + ", "
+                    //    + "Image = '" + objItems.Image + "', IsActive = " + objItems.IsActive + ", ModifiedDate = now() , "
+                    //    + "Specefications = '" + objItems.Specefications + "' "
+                    //    + "WHERE ID = " + objItems.ID;
+
+                }
+                objDA.ExecuteNonQuery(sqlQuery);
+
+                sqlQueryClass = "DELETE FROM teacher_class WHERE teacher_id = " + objTeacher.ID ;
+                objDA.ExecuteNonQuery(sqlQueryClass);
+                for (int i = 0; i < objTeacher.class_ids.Count; i++)
+                {
+                    sqlQueryClass = " INSERT INTO teacher_class(teacher_id,school_id,class_id) VALUES(" + objTeacher.ID + "," + objTeacher.school_id + "," + objTeacher.class_ids[i].ToString() + ")";
+                    objDA.ExecuteNonQuery(sqlQueryClass);
+                }
+                return "success";
             }
-            objDA.ExecuteNonQuery(sqlQuery);
-            return "success";
-            //}
-            //catch (Exception ex)
-            //{
-            //return "error";
-            //}
+            catch (Exception ex)
+            {
+                return "error";
+            }
         }
 
         public string DeleteTeacher(int teacherID)
@@ -2000,7 +2010,7 @@ namespace BusinussLayer
                 string GoogleAppID = googleAPPID;
                 var SENDER_ID = senderID;
                 string devider = ":RBAIJSDUR:";
-                var value = "NT" + devider + System.DateTime.Now + devider + fname + devider + fid + devider + ftype + devider + sub + devider + file + devider + msg;                
+                var value = "NT" + devider + System.DateTime.Now + devider + fname + devider + fid + devider + ftype + devider + sub + devider + file + devider + msg;
                 WebRequest tRequest;
                 tRequest = WebRequest.Create("https://android.googleapis.com/gcm/send");
                 tRequest.Method = "post";
@@ -2039,7 +2049,7 @@ namespace BusinussLayer
         }
 
         #endregion
-        
+
         public DataTable searchPwd(int school_id)
         {
             try
@@ -2086,7 +2096,7 @@ namespace BusinussLayer
                     sqlQuery = "INSERT INTO password (school_id,password,is_taken) VALUES(" + school_id + ",'" + password + "',0);";
                     objDA.ExecuteNonQuery(sqlQuery);
                 }
-                
+
                 return "success";
             }
             catch (Exception ex)

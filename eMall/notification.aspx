@@ -3,6 +3,9 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <%@ MasterType VirtualPath="~/mySkool.Master" %>
     <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajax" %>
+    <script type="text/javascript">
+        HideWait();
+    </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
@@ -95,7 +98,7 @@
         <table>
             <tr>
                 <td style="border: solid 1px #E8E8E8; width: 55%;">
-                    <%--<asp:UpdatePanel ID="upschoollogin" runat="server">
+                    <%--<asp:UpdatePanel ID="upnotification" runat="server">
                         <ContentTemplate>--%>
                     <table width="100%">
                         <tr>
@@ -185,7 +188,7 @@
                                 <%--<asp:Image runat="server" ID="imgItem" Width="120" Height="100" />--%>
                             </td>
                         </tr>
-                        
+
                         <tr>
                             <td align="left" class="adminLabel">
                                 <asp:Label runat="server" ID="Label1" Text="Attach File"></asp:Label>
@@ -200,8 +203,21 @@
 
 
                     </table>
-                    <%--</ContentTemplate>
-                    </asp:UpdatePanel>--%>
+                    </ContentTemplate>
+                        <%--</asp:UpdatePanel>--%>
+                    <%--<Triggers>
+                            <asp:PostBackTrigger ControlID="btnUpload" />
+                        </Triggers>
+                    </asp:UpdatePanel>
+                    <asp:UpdateProgress ID="UpdateProgress" runat="server" AssociatedUpdatePanelID="upnotification">
+                        <ProgressTemplate>
+                            <div class="overlay">
+                                <div style="z-index: 1000; margin-left: 350px; margin-top: 200px; opacity: 1; -moz-opacity: 1;">
+                                    <img alt="" src="loading.gif" />
+                                </div>
+                            </div>
+                        </ProgressTemplate>
+                    </asp:UpdateProgress>--%>
                 </td>
                 <td style="width: 10px;"></td>
                 <td style="border: solid 1px #E8E8E8; vertical-align: top; width: 45%;">

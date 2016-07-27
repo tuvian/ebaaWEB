@@ -442,7 +442,11 @@ namespace eMall
                 {
                     try
                     {
-                        if (fuTeacher.PostedFile.ContentType == "image/jpeg" || fuTeacher.PostedFile.ContentType == "image/png")
+                        string fileName = fuTeacher.FileName;
+                        string FileExtension = fileName.Substring(fileName.LastIndexOf('.') + 1).ToLower();
+                        //if (fuTeacher.PostedFile.ContentType == "image/jpeg" || fuTeacher.PostedFile.ContentType == "image/png")
+                        if (FileExtension == "jpeg" || FileExtension == "png" || FileExtension == "tif" || FileExtension == "gif" || FileExtension == "bmp" 
+                            || FileExtension == "jpg")                        
                         {
                             if (fuTeacher.PostedFile.ContentLength < 1024000)
                             {
@@ -456,7 +460,7 @@ namespace eMall
                                 lblError.Text = "Upload status: The file has to be less than 1 mb!";
                         }
                         else
-                            lblError.Text = "Upload status: Only JPEG/PNG files are accepted!";
+                            lblError.Text = "Upload status: Only jpeg/png/tif/gif/bmp/jpg files are accepted!";
                     }
                     catch (Exception ex)
                     {

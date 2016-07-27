@@ -13,6 +13,7 @@ using PushSharp;
 using PushSharp.Apple;
 using PushSharp.Core;
 using System.IO;
+using System.Threading;
 
 namespace eMall
 {
@@ -35,42 +36,42 @@ namespace eMall
             }
         }
 
-        protected void Upload(object sender, EventArgs e)
-        {
-            try
-            {
-                if (fuTeacher.HasFile)
-                {
-                    try
-                    {
-                        ////if (fuTeacher.PostedFile.ContentType == "image/jpeg" || fuTeacher.PostedFile.ContentType == "image/png")
-                        ////{
-                        if (fuTeacher.PostedFile.ContentLength < 1024000)
-                        {
-                            string filename = Path.GetFileName(fuTeacher.FileName);
-                            fuTeacher.SaveAs(Server.MapPath("~/notification_file/") + filename);
-                            //lblItemImage.Text = filename;
-                            hdItemImage.Value = filename;
-                            lblFileName.Text = filename;
-                            //imgItem.ImageUrl = "student_image/" + filename;
-                        }
-                        else
-                            lblError.Text = "Upload status: The file has to be less than 1mb!";
-                        //}
-                        //else
-                        //    lblError.Text = "Upload status: Only JPEG/PNG files are accepted!";
-                    }
-                    catch (Exception ex)
-                    {
-                        lblError.Text = "Upload status: The file could not be uploaded. The following error occured: " + ex.Message;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                eMallBL.logErrors("UC_FileUploader", ex.GetType().ToString(), ex.Message);
-            }
-        }
+        //protected void Upload(object sender, EventArgs e)
+        //{
+        //    try
+        //    {
+        //        if (fuTeacher.HasFile)
+        //        {
+        //            try
+        //            {
+        //                ////if (fuTeacher.PostedFile.ContentType == "image/jpeg" || fuTeacher.PostedFile.ContentType == "image/png")
+        //                ////{
+        //                if (fuTeacher.PostedFile.ContentLength < 1024000)
+        //                {
+        //                    string filename = Path.GetFileName(fuTeacher.FileName);
+        //                    fuTeacher.SaveAs(Server.MapPath("~/notification_file/") + filename);
+        //                    //lblItemImage.Text = filename;
+        //                    hdItemImage.Value = filename;
+        //                    lblFileName.Text = filename;
+        //                    //imgItem.ImageUrl = "student_image/" + filename;
+        //                }
+        //                else
+        //                    lblError.Text = "Upload status: The file has to be less than 1mb!";
+        //                //}
+        //                //else
+        //                //    lblError.Text = "Upload status: Only JPEG/PNG files are accepted!";
+        //            }
+        //            catch (Exception ex)
+        //            {
+        //                lblError.Text = "Upload status: The file could not be uploaded. The following error occured: " + ex.Message;
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        eMallBL.logErrors("UC_FileUploader", ex.GetType().ToString(), ex.Message);
+        //    }
+        //}
 
         private void fillClassForStudents()
         {
@@ -188,7 +189,7 @@ namespace eMall
             chkClassForTeacher.DataBind();
             chkClassForStudent.ClearSelection();
             chkClassForTeacher.ClearSelection();
-            
+            lblFileName.Text = "";
         }
 
         protected void GridItems_PageIndexChanging(object sender, GridViewPageEventArgs e)
@@ -274,37 +275,81 @@ namespace eMall
         {
             try
             {
+                ShowLoading();
                 if (fuTeacher.HasFile)
                 {
                     try
                     {
-                        ////if (fuTeacher.PostedFile.ContentType == "image/jpeg" || fuTeacher.PostedFile.ContentType == "image/png")
-                        ////{
-                        if (fuTeacher.PostedFile.ContentLength < 512000)
+                        string fileName = fuTeacher.FileName;
+                        string FileExtension = fileName.Substring(fileName.LastIndexOf('.') + 1).ToLower();
+                        string newFilename = string.Format(@"{0}.{1}", System.DateTime.Now.Ticks, FileExtension);
+                        //if (FileExtension == "jpeg" || FileExtension == "png")
+                        //{
+
+                        //    FileUpload1.SaveAs(Server.MapPath(fileName));
+
+                        //}
+                        if (FileExtension == "jpeg" || FileExtension == "png" || FileExtension == "mp4" || FileExtension == "mov" || FileExtension == "m4v"
+                            || FileExtension == "tif" || FileExtension == "gif" || FileExtension == "bmp" || FileExtension == "pdf" || FileExtension == "jpg"
+                            || FileExtension == "mpeg")
                         {
-                            string filename = Path.GetFileName(fuTeacher.FileName);
-                            fuTeacher.SaveAs(Server.MapPath("~/notification_file/") + filename);
-                            //lblItemImage.Text = filename;
-                            hdItemImage.Value = filename;
-                            lblFileName.Text = filename;
-                            //imgItem.ImageUrl = "student_image/" + filename;
+                            if (fuTeacher.PostedFile.ContentLength < 3072000)
+                            {
+                                string filename = Path.GetFileName(fuTeacher.FileName);
+                                fuTeacher.SaveAs(Server.MapPath("~/notification_file/") + newFilename);
+                                hdItemImage.Value = newFilename;
+                                lblFileName.Text = newFilename;
+                            }
+                            else
+                                lblError.Text = "Upload status: The file has to be less than 3 mb";
                         }
                         else
-                            lblError.Text = "Upload status: The file has to be less than 500 kb!";
-                        //}
-                        //else
-                        //    lblError.Text = "Upload status: Only JPEG/PNG files are accepted!";
+                            lblError.Text = "Upload status: Only jpeg/jpg/png/tif/gif/bmp/pdf/mp4/mov/m4v/mpeg files are accepted!";
                     }
                     catch (Exception ex)
                     {
                         lblError.Text = "Upload status: The file could not be uploaded. The following error occured: " + ex.Message;
                     }
                 }
+                lblError.Text = "Successfully attached file";
             }
             catch (Exception ex)
             {
                 eMallBL.logErrors("UC_FileUploader", ex.GetType().ToString(), ex.Message);
             }
+        }
+
+        private void ShowLoading()
+        {
+            //Show loding message
+
+            Response.Write("<div id='mydiv' >");
+
+            Response.Write("_");
+
+            Response.Write("</div>");
+
+            Response.Write("<script>mydiv.innerText = '';</script>");
+
+            Response.Write("<script language=javascript>;");
+
+            Response.Write("var dots = 0;var dotmax = 10;function ShowWait()");
+
+            Response.Write("{var output; output = 'Loading';dots++;if(dots>=dotmax)dots=1;");
+
+            Response.Write("for(var x = 0;x < dots;x++){output += '.';}mydiv.innerText = output;}");
+
+            Response.Write("function StartShowWait(){mydiv.style.visibility = 'visible'; window.setInterval('ShowWait()',1000);}");
+
+            Response.Write("function HideWait(){mydiv.style.visibility = 'hidden';window.clearInterval();}");
+
+            Response.Write("StartShowWait();</script>");
+
+            Response.Write("</script>");
+
+            Response.Flush();
+
+            //Thread.Sleep(10000);
         }
     }
 }
