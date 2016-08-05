@@ -164,7 +164,7 @@ namespace eMall
 
         protected void GridItems_RowDeleting(object sender, GridViewDeleteEventArgs e)
         {
-            int ID = Convert.ToInt32(GridItems.DataKeys[e.RowIndex].Values["id"].ToString());
+            int ID = Convert.ToInt32(GridItems.DataKeys[e.RowIndex].Values["login_id"].ToString());
             eMallBL objBL = new eMallBL();
             string status = objBL.DeleteUserLogin(ID);
             if (status == "success")

@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/TopLeft.Master" AutoEventWireup="true" CodeBehind="404Error.aspx.cs"
+﻿<%@ Page Language="C#" MasterPageFile="~/ItemMaster.Master" AutoEventWireup="true" CodeBehind="404Error.aspx.cs"
     Inherits="eMall._04Error" Title="Untitled Page" %>
 <%@OutputCache Duration="600" VaryByParam="none" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">

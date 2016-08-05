@@ -140,6 +140,7 @@
     <Content Include="school_logo\T15.png" />
     <Content Include="school_logo\T17.png" />
     <Content Include="school_logo\T6.png" />
+    <Content Include="serverbusy.aspx" />
     <Content Include="studentlogin.aspx" />
     <Content Include="students.aspx" />
     <Content Include="student_image\DP3.png" />
@@ -281,6 +282,13 @@
     </Compile>
     <Compile Include="school.aspx.designer.cs">
       <DependentUpon>school.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="serverbusy.aspx.cs">
+      <DependentUpon>serverbusy.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="serverbusy.aspx.designer.cs">
+      <DependentUpon>serverbusy.aspx</DependentUpon>
     </Compile>
     <Compile Include="studentlogin.aspx.cs">
       <DependentUpon>studentlogin.aspx</DependentUpon>
