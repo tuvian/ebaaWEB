@@ -6,6 +6,36 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+        <script type="text/javascript">
+            $(function () {
+                $("[id*=TreeView1] input[type=checkbox]").bind("click", function () {
+                    var table = $(this).closest("table");
+                    if (table.next().length > 0 && table.next()[0].tagName == "DIV") {
+                        //Is Parent CheckBox
+                        var childDiv = table.next();
+                        var isChecked = $(this).is(":checked");
+                        $("input[type=checkbox]", childDiv).each(function () {
+                            if (isChecked) {
+                                $(this).attr("checked", "checked");
+                            } else {
+                                $(this).removeAttr("checked");
+                            }
+                        });
+                    } else {
+                        //Is Child CheckBox
+                        var parentDIV = $(this).closest("DIV");
+                        if ($("input[type=checkbox]", parentDIV).length == $("input[type=checkbox]:checked", parentDIV).length) {
+                            $("input[type=checkbox]", parentDIV.prev()).attr("checked", "checked");
+                        } else {
+                            $("input[type=checkbox]", parentDIV.prev()).removeAttr("checked");
+                        }
+                    }
+                });
+            })
+
+        </script>
+
     <%--   <asp:UpdatePanel ID="up1" runat="server">
         <ContentTemplate>--%>
     <%--<div class="adminContentArea">
@@ -49,7 +79,7 @@
                         Width="100%" AllowPaging="True" AllowSorting="True" CellPadding="4" ForeColor="#333333"
                         GridLines="None" Font-Size="13px" Font-Names="Verdana" OnPageIndexChanging="GridItems_PageIndexChanging"
                         OnRowDeleting="GridItems_RowDeleting" OnRowDataBound="GridItems_RowDataBound" OnRowCommand="GridItems_RowCommand"
-                        DataKeyNames="id,school_id,class_id,class_std,class_division,code,name,mobile,email,department_id,designation_id,present_address,permenant_address,nationality,status,qualification,image_path">
+                        DataKeyNames="id,school_id,class_id,classids,class_std,class_division,code,name,mobile,email,department_id,designation_id,present_address,permenant_address,nationality,status,qualification,image_path">
                         <%-- OnRowEditing="GridItems_RowEditing"
                         OnPageIndexChanging="GridItems_PageIndexChanging"
                         OnRowDeleting="GridItems_RowDeleting" 
@@ -147,8 +177,8 @@
         <table>
             <tr>
                 <td style="border: solid 1px #E8E8E8; width: 55%;">
-                    <asp:UpdatePanel ID="upteacher" runat="server">
-                        <ContentTemplate>
+                    <%--<asp:UpdatePanel ID="upteacher" runat="server">
+                        <ContentTemplate>--%>
                             <table width="100%">
 
                                 <tr>
@@ -165,11 +195,13 @@
 
                                 <tr>
                                     <td align="left" class="adminLabel">
-                                        <asp:Label runat="server" ID="Label15" Text="Teachers In the Class :"></asp:Label>
+                                        <asp:Label runat="server" ID="Label15" Text="Assigned Classes :"></asp:Label>
                                     </td>
                                     <td align="left">
                                         <div style="width: 200px; height: 150px; padding: 2px; overflow: auto; border: 1px solid #ccc;">
                                             <asp:CheckBoxList class="BodyTxt" ID="chkClassForTeacher" runat="server"></asp:CheckBoxList>
+                                            <asp:TreeView ID="TreeView1" runat="server" ShowCheckBoxes="All">
+                                            </asp:TreeView>
                                         </div>
                                         <asp:Label ID="lblSelectedClassForTeacher" runat="server"></asp:Label>
                                     </td>
@@ -296,8 +328,8 @@
                                     </td>
                                 </tr>
                             </table>
-                        </ContentTemplate>
-                    </asp:UpdatePanel>
+                        <%--</ContentTemplate>
+                    </asp:UpdatePanel>--%>
                 </td>
                 <td style="width: 10px;"></td>
                 <td style="border: solid 1px #E8E8E8; vertical-align: top; width: 45%;">

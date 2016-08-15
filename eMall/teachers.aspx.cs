@@ -16,6 +16,7 @@ namespace eMall
         public string FileTypes = ".jpeg,.png,.btmap";
         private int MaxSize = 4194304;
         public string _filePath = "Files/";
+        string selectedNode = "";
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -31,6 +32,21 @@ namespace eMall
                 filldepartmentsearch();
                 fillSchoolCodes();
                 fillClass();
+
+
+                //TreeView1.Nodes.Add(new TreeNode("Fruits", "Fruits"));
+                //TreeView1.Nodes[0].ChildNodes.Add(new TreeNode("Mango", "Mango"));
+                //TreeView1.Nodes[0].ChildNodes.Add(new TreeNode("Apple", "Apple"));
+                //TreeView1.Nodes[0].ChildNodes.Add(new TreeNode("Pineapple", "Pineapple"));
+                //TreeView1.Nodes[0].ChildNodes.Add(new TreeNode("Orange", "Orange"));
+                //TreeView1.Nodes[0].ChildNodes.Add(new TreeNode("Grapes", "Grapes"));
+
+                //TreeView1.Nodes.Add(new TreeNode("Vegetables", "Vegetables"));
+                //TreeView1.Nodes[1].ChildNodes.Add(new TreeNode("Carrot", "Carrot"));
+                //TreeView1.Nodes[1].ChildNodes.Add(new TreeNode("Cauliflower", "Cauliflower"));
+                //TreeView1.Nodes[1].ChildNodes.Add(new TreeNode("Potato", "Potato"));
+                //TreeView1.Nodes[1].ChildNodes.Add(new TreeNode("Tomato", "Tomato"));
+                //TreeView1.Nodes[1].ChildNodes.Add(new TreeNode("Onion", "Onion"));
             }
         }
 
@@ -149,11 +165,40 @@ namespace eMall
                     ddlClass.DataTextField = "classname";
                     ddlClass.DataValueField = "id";
                     ddlClass.DataBind();
-                    
-                    chkClassForTeacher.DataSource = dtTbl;
-                    chkClassForTeacher.DataTextField = "classname";
-                    chkClassForTeacher.DataValueField = "id";
-                    chkClassForTeacher.DataBind();
+
+                    DataTable dtDiv = dtTbl.Copy();
+                    TreeView1.Nodes.Clear();
+                    string parent = "";
+                    foreach (DataRow dr in dtTbl.Rows)
+                    {
+                        if (parent != dr["std"].ToString())
+                        {
+                            parent = dr["std"].ToString();
+                            TreeNode parentNode = new TreeNode(dr["std"].ToString());
+                            TreeView1.Nodes.Add(parentNode);
+                            foreach (DataRow drDiv in dtDiv.Rows)
+                            {
+                                if (drDiv["std"].ToString() == parentNode.Text)
+                                {
+                                    TreeNode child = new TreeNode(drDiv["division"].ToString(), dr["id"].ToString());
+                                    parentNode.ChildNodes.Add(child);
+                                }
+                            }
+                        }
+
+                        //TreeNode tn = new TreeNode(dtTbl.Rows.ToString());
+                        //foreach (DataRow drChild in dr.GetChildRows("Division"))
+                        //{
+                        //    TreeNode childNode = new TreeNode(drChild["Std"].ToString(), drChild["id"].ToString());
+                        //    tn.ChildNodes.Add(childNode);
+                        //}
+                        //TreeView1.Nodes.Add(tn);
+                    }
+
+                    //chkClassForTeacher.DataSource = dtTbl;
+                    //chkClassForTeacher.DataTextField = "classname";
+                    //chkClassForTeacher.DataValueField = "id";
+                    //chkClassForTeacher.DataBind();
                 }
 
                 // Insert 'Select'
@@ -211,7 +256,7 @@ namespace eMall
             //objSearch.userID = Convert.ToInt32(ddlUsers.SelectedValue == "" ? "0" : ddlUsers.SelectedValue);
 
             DataTable dtTbl = new DataTable();
-            
+
             dtTbl = (new eMallBL()).searchTeachers(objTeacher);
             GridItems.PageSize = Convert.ToInt32(10);
             GridItems.DataSource = dtTbl;
@@ -244,16 +289,18 @@ namespace eMall
                     objTeacher.ID = String.IsNullOrEmpty(hdItemID.Value) ? 0 : int.Parse(hdItemID.Value);
 
                     objTeacher.school_id = Convert.ToInt32(ddlSchoolCode.SelectedValue);
+
+                    objTeacher.class_ids = findSelectedClassIds();
                     objTeacher.class_id = Convert.ToInt32(ddlClass.SelectedValue);
 
-                    List<String> teacherclassList = new List<String>();
-                    foreach (ListItem item in chkClassForTeacher.Items)
-                    {
-                        if (item.Selected)
-                            teacherclassList.Add(item.Value);
-                    }
-                    string teacherClasses = String.Join(",", teacherclassList.ToArray()) == "" ? "0" : String.Join(",", teacherclassList.ToArray());
-                    objTeacher.class_ids = teacherclassList;
+                    //List<String> teacherclassList = new List<String>();
+                    //foreach (ListItem item in chkClassForTeacher.Items)
+                    //{
+                    //    if (item.Selected)
+                    //        teacherclassList.Add(item.Value);
+                    //}
+                    //string teacherClasses = String.Join(",", teacherclassList.ToArray()) == "" ? "0" : String.Join(",", teacherclassList.ToArray());
+                    //objTeacher.class_ids = teacherclassList;
 
                     if (objBL.isTeacherCodeAlreadyExist(objTeacher))
                     {
@@ -290,6 +337,47 @@ namespace eMall
             catch (Exception ex)
             {
                 eMallBL.logErrors("UC_Items", ex.GetType().ToString(), ex.Message);
+            }
+        }
+
+        
+        //private string findTreeNodeValues()
+        //{
+        //    string selected = "";
+        //    foreach (TreeNode node in TreeView1.Nodes)
+        //    {
+        //        foreach (TreeNode childnode in node.ChildNodes)
+        //        {
+        //            if (childnode.Checked)
+        //                selected = selected + "," + childnode.Value;
+        //        }
+        //    }
+        //    return selected;
+        //}
+
+        private List<string> findSelectedClassIds()
+        {
+            List<string> classids = new List<string>();
+            foreach (TreeNode node in TreeView1.Nodes)
+            {
+                foreach (TreeNode childnode in node.ChildNodes)
+                {
+                    if (childnode.Checked)
+                        classids.Add(childnode.Value);
+                }
+            }
+            return classids;
+        }
+
+
+        private void PrintRecursive(TreeNode treeNode)
+        {
+            // Print the node.
+            selectedNode = selectedNode + ",";
+            // Print each node recursively.
+            foreach (TreeNode tn in treeNode.ChildNodes)
+            {
+                PrintRecursive(tn);
             }
         }
 
@@ -337,6 +425,7 @@ namespace eMall
             ddlDesignation.SelectedIndex = 0;
             ddlClass.SelectedIndex = 0;
             ddlSchoolCode.SelectedIndex = 0;
+            TreeView1.Nodes.Clear();
         }
 
         protected void GridItems_RowEditing(object sender, GridViewEditEventArgs e)
@@ -408,7 +497,7 @@ namespace eMall
                         string fileName = fuTeacher.FileName;
                         string FileExtension = fileName.Substring(fileName.LastIndexOf('.') + 1).ToLower();
                         if (FileExtension == "jpeg" || FileExtension == "png" || FileExtension == "tif" || FileExtension == "gif" || FileExtension == "bmp"
-                            || FileExtension == "jpg")                        
+                            || FileExtension == "jpg")
                         {
                             if (fuTeacher.PostedFile.ContentLength < 1024000)
                             {
@@ -498,7 +587,34 @@ namespace eMall
 
                 ddlSchoolCode.SelectedValue = GridItems.DataKeys[index].Values["school_id"].ToString();
                 fillClass();
-                ddlClass.SelectedValue = GridItems.DataKeys[index].Values["class_id"].ToString() == "" ? "0" : GridItems.DataKeys[index].Values["class_id"].ToString(); 
+                ddlClass.SelectedValue = GridItems.DataKeys[index].Values["class_id"].ToString() == "" ? "0" : GridItems.DataKeys[index].Values["class_id"].ToString();
+
+                string[] classids = GridItems.DataKeys[index].Values["classids"] == null ? "".Split(',') : GridItems.DataKeys[index].Values["classids"].ToString().Split(',');
+
+                foreach (TreeNode node in TreeView1.Nodes)
+                {
+                    bool allClass = true;
+                    bool atleastOne = false;
+                    foreach (TreeNode childnode in node.ChildNodes)
+                    {
+                        bool thisClass = false;
+                        foreach (string classid in classids)
+                        {
+                            if (classid == childnode.Value)
+                            {
+                                childnode.Checked = true;
+                                atleastOne = true;
+                                thisClass = true;
+                            }
+                        }
+                        if (!thisClass)
+                            allClass = false;
+                    }
+                    if (allClass)
+                        node.Checked = true;
+                    if (atleastOne)
+                        node.Expand();
+                }
 
                 btnSave.Text = "Update";
                 btnAddNew.Enabled = true;

@@ -159,6 +159,7 @@
     <Content Include="teacher_image\T17.png" />
     <Content Include="test.aspx" />
     <Content Include="testwebapi.asmx" />
+    <Content Include="treeview.aspx" />
     <Content Include="UserControls\CommonFileUploader.ascx" />
     <Content Include="users.aspx" />
     <Content Include="Web.config">
@@ -239,6 +240,13 @@
     </Compile>
     <Compile Include="login.aspx.designer.cs">
       <DependentUpon>login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="mastertest.Master.cs">
+      <DependentUpon>mastertest.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="mastertest.Master.designer.cs">
+      <DependentUpon>mastertest.Master</DependentUpon>
     </Compile>
     <Compile Include="msHome.aspx.cs">
       <DependentUpon>msHome.aspx</DependentUpon>
@@ -329,6 +337,13 @@
       <DependentUpon>testwebapi.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="treeview.aspx.cs">
+      <DependentUpon>treeview.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="treeview.aspx.designer.cs">
+      <DependentUpon>treeview.aspx</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\CommonFileUploader.ascx.cs">
       <DependentUpon>CommonFileUploader.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -397,6 +412,7 @@
   <ItemGroup>
     <Content Include="mySkool.Master" />
     <Content Include="packages.config" />
+    <Content Include="mastertest.Master" />
     <None Include="Plugins\Supershope_UserGuid.pdf" />
     <None Include="Properties\PublishProfiles\Profile1.pubxml" />
   </ItemGroup>
