@@ -620,6 +620,7 @@ popCartPanel
 	margin-top: 10px;
 	font-weight: bold;
 	font-size: 12px;
+    min-width:20px;
 }
 .menubutton
 {
@@ -640,6 +641,23 @@ popCartPanel
 {
 	background-color: #507cd1;
 	float: left;
+	font-family: Verdana,Arial,Helvetica,sans-serif;
+	font-size: 11px;
+	font-weight: bold;
+	color: #FFF;
+	margin-left: 3px;
+	height: 24px;
+	padding-left:2px;
+	padding-right:2px;
+	border-left: 1px solid #CCC;
+	border-top: 1px solid #CCC;
+	border-right: 1px solid #CCC;
+}
+.menunoaccess
+{
+    display:none;
+    background-color: #507cd1;
+	float: right;
 	font-family: Verdana,Arial,Helvetica,sans-serif;
 	font-size: 11px;
 	font-weight: bold;
@@ -704,7 +722,7 @@ a.linkselect:hover
 {
 	float: right;
 	height: 50px;
-	width: 300px;
+	width: 750px;
 	text-align: right;
 	font-family: Arial,Helvetica,sans-serif;
 	font-size: 12px;
@@ -722,7 +740,7 @@ a.linkselect:hover
 {
 	float: right;
 	height: 50px;
-	width: 300px;
+	width: 750px;
 	text-align: right;
 	font-family: Arial,Helvetica,sans-serif;
 	font-size: 12px;

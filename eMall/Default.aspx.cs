@@ -36,7 +36,8 @@ namespace eMall
             DataTable dtTblEmployee = new DataTable();
 
             dtTblLogin = (new eMallBL()).getLogin(txtUserName.Text, txtPassword.Text.Trim(), "");
-            if (dtTblLogin.Rows.Count > 0 && (dtTblLogin.Rows[0]["Type"].ToString() == "1" || dtTblLogin.Rows[0]["Type"].ToString() == "2"))
+            if (dtTblLogin.Rows.Count > 0 && (dtTblLogin.Rows[0]["Type"].ToString() == "1" || dtTblLogin.Rows[0]["Type"].ToString() == "2" ||
+                dtTblLogin.Rows[0]["Type"].ToString() == "3"))
             {
                 int loginID = 0;
                 int.TryParse(dtTblLogin.Rows[0]["ID"].ToString(),out loginID);
@@ -70,14 +71,16 @@ namespace eMall
                 }
                 else
                     Session["employee_name"] = "";
-
-
+                
                 Session["username"] = dtTblLogin.Rows[0]["UserName"].ToString();
                 Session["password"] = dtTblLogin.Rows[0]["Password"].ToString();
                 Session["usertype"] = dtTblLogin.Rows[0]["Type"].ToString();
                 Session["user_id"] = dtTblLogin.Rows[0]["ID"].ToString();
                 Session["school_id"] = dtTblLogin.Rows[0]["school_id"].ToString();
-                Response.Redirect("teachers.aspx");
+                if (dtTblLogin.Rows[0]["Type"].ToString() == "3")
+                    Response.Redirect("library.aspx");
+                else
+                    Response.Redirect("teachers.aspx");
             }
             else
             {

@@ -58,7 +58,7 @@
                         Width="100%" AllowPaging="True" AllowSorting="True" CellPadding="4" ForeColor="#333333"
                         GridLines="None" Font-Size="13px" Font-Names="Verdana" OnPageIndexChanging="GridItems_PageIndexChanging"
                         OnRowDeleting="GridItems_RowDeleting" OnRowDataBound="GridItems_RowDataBound" OnRowCommand="GridItems_RowCommand"
-                        DataKeyNames="id,code,name,site_url,address,contact_person,mobile,email,phone,contact_address,nationality, package_id, register_date, expire_date, logo, status, notes, wilayath, waynumber">
+                        DataKeyNames="id,code,name,site_url,address,contact_person,mobile,email,phone,contact_address,nationality, package_id, register_date, expire_date, logo, status, notes, wilayath, waynumber,youtube_cert_file">
                         <%-- OnRowEditing="GridItems_RowEditing"
                         OnPageIndexChanging="GridItems_PageIndexChanging"
                         OnRowDeleting="GridItems_RowDeleting" 
@@ -288,21 +288,21 @@
                                 <asp:DropDownList ID="ddlRegisterMonth" runat="server" CssClass="adminComboNoWidth" Width="45" AutoPostBack="true" OnSelectedIndexChanged="ddlRegisterMonth_SelectedIndexChanged" />
                                         Day
                                 <asp:DropDownList ID="ddlRegisterDay" runat="server" CssClass="adminComboNoWidth" Width="45" />--%>
-                                        <%--<asp:TextBox runat="server" ID="txtRegisterDate" ValidationGroup="items" MaxLength="20"
+                                <%--<asp:TextBox runat="server" ID="txtRegisterDate" ValidationGroup="items" MaxLength="20"
                                     CssClass="adminText" ReadOnly="true" Text="2015-01-01" Visible="false"/>
                                 <asp:RequiredFieldValidator ID="rqrgdate" runat="server" ControlToValidate="txtRegisterDate"
                                     ErrorMessage="*" ToolTip="*" ValidationGroup="items" />--%>
-                                        <%--<asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" ForeColor="Red"
+                                <%--<asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" ForeColor="Red"
                                     ControlToValidate="txtRegisterDate" ValidationGroup="items" ErrorMessage="*" ToolTip="Date format in DD/MM/YYYY"
                                     ValidationExpression="^(0[1-9]|[12][0-9]|3[01])[/](0[1-9]|1[012])[/](19|20)\d\d$"></asp:RegularExpressionValidator>--%>
-                                        <%--<asp:CompareValidator ID="CompareValidator1" runat="server"
+                                <%--<asp:CompareValidator ID="CompareValidator1" runat="server"
                                     ControlToValidate="txtRegisterDate" ErrorMessage="*" ToolTip="Please enter valid date"
                                     Operator="DataTypeCheck" Type="Date"></asp:CompareValidator>--%>
-                                   <%-- </ContentTemplate>
+                                <%-- </ContentTemplate>
                                     <Triggers>--%>
-                                        <%--<asp:AsyncPostBackTrigger ControlID="ddlRegisterYear"
+                                <%--<asp:AsyncPostBackTrigger ControlID="ddlRegisterYear"
                                             EventName="SelectedIndexChanged" />--%>
-                                    <%--</Triggers>
+                                <%--</Triggers>
                                 </asp:UpdatePanel>--%>
                             </td>
                         </tr>
@@ -326,18 +326,18 @@
                                         Day
                                 <asp:DropDownList ID="ddlExpireDay" runat="server" CssClass="adminComboNoWidth" Width="45" />--%>
 
-                                        <%--<asp:TextBox runat="server" ID="txtExpire" ValidationGroup="items" MaxLength="20"
+                                <%--<asp:TextBox runat="server" ID="txtExpire" ValidationGroup="items" MaxLength="20"
                                     CssClass="adminText" ReadOnly="true" Text="2016-01-01" />
                                 <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="txtExpire"
                                     ErrorMessage="*" ToolTip="*" ValidationGroup="items" />--%>
-                                        <%--<asp:RegularExpressionValidator ID="RegularExpressionValidator4" runat="server" ForeColor="Red"
+                                <%--<asp:RegularExpressionValidator ID="RegularExpressionValidator4" runat="server" ForeColor="Red"
                                     ControlToValidate="txtExpire" ValidationGroup="items" ErrorMessage="*" ToolTip="Date format in DD/MM/YYYY"
                                     ValidationExpression="^(0[1-9]|[12][0-9]|3[01])[/](0[1-9]|1[012])[/](19|20)\d\d$"></asp:RegularExpressionValidator>--%>
-                                   <%-- </ContentTemplate>
+                                <%-- </ContentTemplate>
                                     <Triggers>--%>
-                                        <%--<asp:AsyncPostBackTrigger ControlID="ddlRegisterYear"
+                                <%--<asp:AsyncPostBackTrigger ControlID="ddlRegisterYear"
                                             EventName="SelectedIndexChanged" />--%>
-                                    <%--</Triggers>
+                                <%--</Triggers>
                                 </asp:UpdatePanel>--%>
                             </td>
                         </tr>
@@ -382,6 +382,25 @@
                                         CssClass="adminTextLarge" />
                                 </td>
                             </tr>
+                        </table>
+                        <table runat="server" id="tblEditFields" visible="false">
+                            <tr>
+                                <td colspan="2">Upload Youtube Certificate </td>
+                            </tr>
+                            <tr>
+                                <td align="left">
+                                    <asp:FileUpload runat="server" ID="fileUploadYoutubeCert" />
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <asp:TextBox runat="server" ID="txtYoutubeCert"  ReadOnly="true" CssClass="adminText" />
+                                    <asp:Button runat="server" ID="btnCertUpload" Text="Upload" OnClick="btnCertUpload_Click" />                                    
+                                </td>
+
+                            </tr>
+
                         </table>
                     </div>
                 </td>

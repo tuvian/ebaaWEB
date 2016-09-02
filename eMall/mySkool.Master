@@ -30,33 +30,10 @@
                                     <asp:LinkButton runat="server" ID="lbLogout" Text="Logout" OnClick="lbLogout_Click" />
                                 </asp:Panel>
                             </div>
-                            <%--<div style="float: right; width: 420px;">
-                            <asp:Panel ID="panelLogin" runat="server">
-                                <uc:ucLogin ID="ucLogin" runat="server" />
-                            </asp:Panel>
-                        </div>--%>
                         </div>
 
-                        <%--<div class="menubox">
-                            <div class="menuinner">
-                                <nav>
-                                <ul class="nav">
-                                    <li><a href="#" class="active">About</a></li>
-                                    <li>
-                                        <a href="#">Login</a>
-                                        <ul>
-                                            <li><a href="#">Admin</a></li>
-                                            <li><a href="#">item</a></li>
-                                            <li><a href="#">item</a></li>
-                                            <li><a href="#">item</a></li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                                </nav>
-                            </div>--%>
-
                         <div class="menuinner">
-                            <div runat="server" id="divSchool">
+                            <div class='<%= SchoolMenu %>'>
                                 <div style="margin-top: 3px; margin-left: 2px; margin-right: 2px;">
                                     <a href="school.aspx" class='<%= SchoolLink %>'>School</a>
                                 </div>
@@ -64,11 +41,6 @@
                             <div class='<%= UserMenu %>'>
                                 <div style="margin-top: 3px; margin-left: 2px; margin-right: 2px;">
                                     <a href="users.aspx" class='<%= UserLink %>'>Users</a>
-                                    <%--<ul>
-                                            <li><a href="users.aspx" class='<%= UserLink %>'>Admin</a></li>
-                                            <li><a href="users.aspx" class='<%= UserLink %>'>Teachers</a></li>
-                                            <li><a href="users.aspx" class='<%= UserLink %>'>Students</a></li>
-                                        </ul>--%>
                                 </div>
                             </div>
                             <div class='<%= PwdMenu %>'>
@@ -81,19 +53,15 @@
                                     <a href="teachers.aspx" class='<%= HomeLink %>'>Teacher</a>
                                 </div>
                             </div>
-                            <%-- <div class='<%= ShopeMenu %>'>
-                                <div style="margin-top: 3px;">
-                                    <a href="#" class='<%= ShopeLink %>'>Shope</a></div>
-                            </div>--%>
                             <div class='<%= ContactUsMenu %>'>
                                 <div style="margin-top: 3px; margin-left: 2px; margin-right: 2px;">
-                                    <a href="teacherlogin.aspx" class='<%= ContactUsLink %>'>Teacher Login</a>
+                                    <a href="teacherlogin.aspx" class='<%= ContactUsLink %>'>Teac-Login</a>
                                 </div>
                             </div>
 
                             <div class='<%= AboutUsMenu %>'>
                                 <div style="margin-top: 3px; margin-left: 2px; margin-right: 2px;">
-                                    <a href="events.aspx" class='<%= AboutUsLink %>'>Events</a>
+                                    <a href="events.aspx" class='<%= AboutUsLink %>'>Event</a>
                                 </div>
                             </div>
                             <div class='<%= StudentsMenu %>'>
@@ -116,14 +84,19 @@
                                     <a href="driver.aspx" class='<%= DriverLink %>'>Driver</a>
                                 </div>
                             </div>
-                            <div class='<%= StudentLoginMenu %>'>
+                            <div class='<%= StudentLoginMenu %>' >
                                 <div style="margin-top: 3px; margin-left: 2px; margin-right: 2px;">
-                                    <a href="studentlogin.aspx" class='<%= StudentLoginLink %>'>Student Login</a>
+                                    <a href="studentlogin.aspx" class='<%= StudentLoginLink %>'>Stud-Login</a>
                                 </div>
                             </div>
                             <div class='<%= NotificationMenu %>'>
                                 <div style="margin-top: 3px; margin-left: 2px; margin-right: 2px;">
-                                    <a href="notification.aspx" class='<%= NotificationLink %>'>Notification</a>
+                                    <a href="notification.aspx" class='<%= NotificationLink %>'>Notify</a>
+                                </div>
+                            </div>
+                            <div class='<%= LibMenu %>'>
+                                <div style="margin-top: 3px;">
+                                    <a href="library.aspx" class='<%= LibLink %>'>Library</a>
                                 </div>
                             </div>
                         </div>

@@ -64,32 +64,16 @@ namespace eMall
                     objSchool.contact_address = txtContactAddres.Text.Trim().Replace("'", "''");
                     objSchool.nationality = txtNationality.Text.Trim().Replace("'", "''");
                     objSchool.package_id = Convert.ToInt32(ddlPackage.SelectedValue);
-                    //objSchool.register_date = Convert.ToDateTime(txtRegisterDate.Text.Trim().Replace("'", "''"));
-                    //objSchool.expire_date = Convert.ToDateTime(txtExpire.Text.Trim().Replace("'", "''"));
                     objSchool.logo = lblItemImage.Text.Trim().Replace("'", "''");
+                    objSchool.youtube_cert_file = txtYoutubeCert.Text.Trim().Replace("'", "''");
                     objSchool.notes = txtNotes.Text.Trim().Replace("'", "''");
                     objSchool.status = chkActive.Checked;
                     objSchool.wilayath = txtWilayath.Text.Trim().Replace("'", "''");
                     objSchool.waynumber = txtWayNymber.Text.Trim().Replace("'", "''");
-
-                    //objSchool.register_date = DateTime.ParseExact(txtRegisterDate.Text.Trim().Replace("'", "''"), "yyyy-MM-dd", CultureInfo.InvariantCulture);
-                    //objSchool.expire_date = DateTime.ParseExact(txtExpire.Text.Trim().Replace("'", "''"), "yyyy-MM-dd", CultureInfo.InvariantCulture);
-
+                    
                     objSchool.register_date = DateTime.ParseExact(txtRegisterDate.Text.Trim().Replace("'", "''"), "dd/MM/yyyy", CultureInfo.InvariantCulture);
                     objSchool.expire_date = DateTime.ParseExact(txtExpireDate.Text.Trim().Replace("'", "''"), "dd/MM/yyyy", CultureInfo.InvariantCulture);
 
-                    //objSchool.register_date = new DateTime(Convert.ToInt32(ddlRegisterYear.Text), Convert.ToInt32(ddlRegisterMonth.Text), Convert.ToInt32(ddlRegisterDay.Text));
-                    //objSchool.expire_date = new DateTime(Convert.ToInt32(ddlExpireYear.Text), Convert.ToInt32(ddlExpireMonth.Text), Convert.ToInt32(ddlExpireDay.Text));
-
-                    //objTeacher.present_address = txtPresentAddress.Text.Trim().Replace("'", "''");
-                    //objTeacher.status = chkActive.Checked;
-                    //objTeacher.permenant_address = txtPermenantAddress.Text.Trim().Replace("'", "''");
-                    //objTeacher.qualification = txtQualification.Text.Trim().Replace("'", "''");
-                    //objTeacher.department_id = Convert.ToInt32(ddlDepartment.SelectedValue);
-                    //objTeacher.designation_id = Convert.ToInt32(ddlDesignation.SelectedValue);
-                    //objTeacher.nationality = txtNationality.Text.Trim().Replace("'", "''");
-                    //objTeacher.image_path = lblItemImage.Text.Trim().Replace("'", "''");
-                    //objTeacher.image_path = hdItemImage.Value.Trim().Replace("'", "''");
                     objSchool.ID = String.IsNullOrEmpty(hdItemID.Value) ? 0 : int.Parse(hdItemID.Value);
 
                     if (objBL.isSchoolCodeAlreadyExist(objSchool))
@@ -146,9 +130,9 @@ namespace eMall
             int ID = Convert.ToInt32(GridItems.DataKeys[e.RowIndex].Values["id"].ToString());
             eMallBL objBL = new eMallBL();
             string referenceIDMsg = objBL.isReferenceExist(ID, "School_id", "student,teacher,meeting,driver");
-            if(referenceIDMsg != "NO")
+            if (referenceIDMsg != "NO")
                 Response.Write("<script>alert('" + Server.HtmlEncode(referenceIDMsg) + "')</script>");
-                //ScriptManager.RegisterClientScriptBlock(this.Page, this.Page.GetType(), "onclick", "alert(" + Server.HtmlEncode(referenceIDMsg) + ");", true);
+            //ScriptManager.RegisterClientScriptBlock(this.Page, this.Page.GetType(), "onclick", "alert(" + Server.HtmlEncode(referenceIDMsg) + ");", true);
             else
             {
                 //string status = objBL.DeleteSchool(ID);
@@ -196,6 +180,42 @@ namespace eMall
             catch (Exception ex)
             {
                 eMallBL.logErrors("UC_FileUploader", ex.GetType().ToString(), ex.Message);
+            }
+        }
+
+
+        protected void btnCertUpload_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (fileUploadYoutubeCert.HasFile)
+                {
+                    try
+                    {
+                        string filename = hdItemID.Value == null ? string.Empty : hdItemID.Value + Path.GetFileName(fileUploadYoutubeCert.FileName);
+                        string FileExtension = filename.Substring(filename.LastIndexOf('.') + 1).ToLower();
+                        if (FileExtension == "json")
+                        {
+                            if (fileUploadYoutubeCert.PostedFile.ContentLength < 1024000)
+                            {
+                                fileUploadYoutubeCert.SaveAs(Server.MapPath("~/school_Youtube_Cert/") + filename);
+                                txtYoutubeCert.Text = filename;
+                            }
+                            else
+                                lblError.Text = "Upload status: The file has to be less than 1 MB!";
+                        }
+                        else
+                            lblError.Text = "Upload status: Only Json files are accepted!";
+                    }
+                    catch (Exception ex)
+                    {
+                        lblError.Text = "Upload status: The file could not be uploaded. The following error occured: " + ex.Message;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                eMallBL.logErrors("btnCertUpload_Click", ex.GetType().ToString(), ex.Message);
             }
         }
 
@@ -321,6 +341,7 @@ namespace eMall
                 txtRegisterDate.Text = GridItems.DataKeys[index].Values["register_date"].ToString();
                 txtExpireDate.Text = GridItems.DataKeys[index].Values["expire_date"].ToString();
                 lblItemImage.Text = GridItems.DataKeys[index].Values["logo"].ToString();
+                txtYoutubeCert.Text = GridItems.DataKeys[index].Values["youtube_cert_file"].ToString();
                 txtNotes.Text = GridItems.DataKeys[index].Values["notes"].ToString();
 
                 //ddlRegisterYear.SelectedValue = Convert.ToDateTime(GridItems.DataKeys[index].Values["register_date"].ToString()).Year.ToString();
@@ -339,6 +360,7 @@ namespace eMall
 
                 btnSave.Text = "Update";
                 btnAddNew.Enabled = true;
+                tblEditFields.Visible = true;
                 //=========================================================
             }
         }
@@ -513,6 +535,7 @@ namespace eMall
             txtcode.Text = "";
             txtMobile.Text = "";
             btnSave.Text = "Save";
+            tblEditFields.Visible = false;
             hdItemID.Value = "";
             //hdItemImage.Value = "";
             lblItemImage.Text = "";
@@ -527,6 +550,7 @@ namespace eMall
             chkActive.Checked = false;
             txtWilayath.Text = "";
             txtWayNymber.Text = "";
+            txtYoutubeCert.Text = "";
         }
 
         public static void AddConfirmDelete(GridView gv, GridViewRowEventArgs e)

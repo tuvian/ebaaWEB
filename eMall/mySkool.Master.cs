@@ -14,10 +14,9 @@ namespace eMall
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            divSchool.Attributes.Add("Class", SchoolMenu);
-            if (Session["usertype"] != null && Session["usertype"].ToString() == "2")
+            if (Session["usertype"] != null && (Session["usertype"].ToString() == "2" || Session["usertype"].ToString() == "3"))
             {
-                divSchool.Visible = false;
+                SchoolMenu = "menunoaccess";   
                 int school_id = 0;
                 int.TryParse(Session["school_id"].ToString(), out school_id);
                 eMallEntity.school objSchool = new eMallEntity.school();
@@ -27,6 +26,11 @@ namespace eMall
                 imgSchooLogo.Src = "/school_logo/" + dtTbl.Rows[0]["logo"].ToString();
                 imgSchooLogo.Width = 178;
                 imgSchooLogo.Height = 95;
+                if (Session["usertype"] != null && Session["usertype"].ToString() == "3")
+                {
+                    HomeMenu = UserMenu = ShopeMenu = ContactUsMenu = AboutUsMenu = SchoolMenu = HolidayMenu = DriverMenu = 
+                        StudentsMenu = BusMenu = StudentLoginMenu = NotificationMenu = PwdMenu = "menunoaccess";
+                }
             }
         }
 
@@ -201,6 +205,19 @@ namespace eMall
         {
             get { return _pwdLink; }
             set { _pwdLink = value; }
+        }
+
+        private string _libMenu = "menubutton";
+        public string LibMenu
+        {
+            get { return _libMenu; }
+            set { _libMenu = value; }
+        }
+        private string _libLink = "link";
+        public string LibLink
+        {
+            get { return _libLink; }
+            set { _libLink = value; }
         }
 
         #endregion

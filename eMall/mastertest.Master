@@ -5,19 +5,47 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
+    <link href="styles/w4d.css" rel="Stylesheet" type="text/css" />
     <asp:ContentPlaceHolder ID="head" runat="server">
     </asp:ContentPlaceHolder>
 </head>
 <body>
     <form id="form1" runat="server">
-    <div>
-        <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
-        
-        </asp:ContentPlaceHolder>
-        <asp:ContentPlaceHolder ID="ContentPlaceHolder2" runat="server">
-        
-        </asp:ContentPlaceHolder>
-    </div>
+        <div class="header">
+            <div class="logo">
+                <img src="images/logo.jpg" runat="server" alt="Logo" id="imgSchooLogo">
+            </div>
+            <div class="smallMenuText">
+                <div style="float: right; margin-right: 15px; cursor: pointer;">
+                    <asp:Panel ID="panelLoginButton" runat="server" Width="20" Style="height: 15px">
+                        <asp:LinkButton runat="server" ID="lbLogout" Text="Logout" />
+                    </asp:Panel>
+                </div>
+                <div class="menuinner">
+                    <div runat="server" id="divSchool">
+                        <div style="margin-top: 3px; margin-left: 2px; margin-right: 2px;">
+                            <a href="school.aspx">School</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="float: left; border: solid 1px red; width: 200px; height: 100px;">Left menu</div>
+        <div style="float: left; border: solid 1px red; width: 100%; height: 100px;">
+            <asp:ContentPlaceHolder ID="ContentPlaceHolder2" runat="server">
+
+            </asp:ContentPlaceHolder>
+        </div>
+        <%--<div id="footer" >
+            <p>
+                <a href="#" style="color: #333333; font-size: 12px; text-decoration: none;">About Us</a>
+                &nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp; <a href="#" style="color: #333333; font-size: 12px; text-decoration: none;">Home</a>&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;<a href="#" style="color: #333333; font-size: 12px; text-decoration: none;">Contact Us</a>
+            </p>
+            <p>
+                © 2015 Ebaa. All Rights Reserved.
+            </p>
+        </div>--%>
     </form>
 </body>
 </html>

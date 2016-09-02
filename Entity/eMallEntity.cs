@@ -31,8 +31,7 @@ namespace Entity
             public string class_division { get; set; }
             public string class_name { get; set; }
             public List<String> class_ids { get; set; }
-
-
+            
         }
 
         public class school
@@ -57,6 +56,7 @@ namespace Entity
             public string search_operator { get; set; }
             public string wilayath { get; set; }
             public string waynumber { get; set; }
+            public string youtube_cert_file { get; set; }
         }
 
         public class schooluser
@@ -270,6 +270,23 @@ namespace Entity
             public int school_id { get; set; }
             public string pwd { get; set; }
             public int is_taken { get; set; }
+        }
+
+        public class library
+        {
+            public int ID { get; set; }
+            public int school_id { get; set; }
+            public string std { get; set; }
+            public int subjectID { get; set; }
+            public int lesson { get; set; }
+            public string title { get; set; }
+            public string filepath { get; set; }
+            public string filetype { get; set; }
+            public bool status { get; set; }
+            public int createdBy { get; set; }
+            public int createdByType { get; set; }
+            public string notes { get; set; }
+            public string videoUniqueID { get; set; }
         }
 
         #region shope

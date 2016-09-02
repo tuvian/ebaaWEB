@@ -778,11 +778,15 @@ namespace BusinussLayer
                 objTeacher.search_operator = objTeacher.search_operator == null ? " OR " : objTeacher.search_operator;
                 string sqlQuery = ""; // "SET NAMES cp1256;  set character set cp1256; set character set cp1256; ";
 
-                sqlQuery = sqlQuery + "SELECT t.id,t.school_id,t.code,t.name,t.mobile,t.email,t.present_address,t.permenant_address,t.status,t.qualification, t.image_path, " +
+                sqlQuery = "SELECT tr.id,tr.school_id,tr.code,tr.name,tr.mobile,tr.email,tr.present_address,tr.permenant_address,tr.status,tr.qualification, tr.image_path, " +
+                    "tr.department, tr.designation_id,tr.designation, tr.department_id,tr.nationality, " +
+                    "tr.class_id, tr.class_std, tr.class_division, tr.classname, GROUP_CONCAT(classids SEPARATOR ',') as classids " +
+                    "FROM (SELECT t.id,tc.class_id as classids,t.school_id,t.code,t.name,t.mobile,t.email,t.present_address,t.permenant_address,t.status,t.qualification, t.image_path, " +
                     "dep.name as department, des.id as designation_id,des.name as designation, dep.id as department_id,t.nationality, " +
                     "cls.id as class_id, cls.std as class_std, cls.division as class_division, CONCAT(std,division) as classname " +
                     "FROM teacher t INNER JOIN department dep ON t.department_id = dep.id INNER JOIN designation des ON des.id = t.designation_id " +
-                    "LEFT JOIN class cls ON t.class_id = cls.id  " +
+                    "LEFT JOIN teacher_class tc ON t.id = tc.teacher_id LEFT JOIN class cls ON cls.id = tc.class_id " +
+                    //"LEFT JOIN class cls ON t.class_id = cls.id  " +
                     //"WHERE ((('' = '" + objTeacher.code + "') OR (t.code like '%" + objTeacher.code + "%' )) " + objTeacher.search_operator +
                     "WHERE ((0 = " + objTeacher.department_id + ") OR (dep.id = " + objTeacher.department_id + ")) AND" +
                     "((0 = " + objTeacher.ID + ") OR (t.id = " + objTeacher.ID + ")) AND" +
@@ -790,7 +794,7 @@ namespace BusinussLayer
                     "((('' = '" + objTeacher.code + "') OR (t.code like '%" + objTeacher.code + "%' )) " + objTeacher.search_operator +
                     "(('' = '" + objTeacher.name + "') OR (t.name like '%" + objTeacher.name + "%' )) " + objTeacher.search_operator +
                     "(('' = '" + objTeacher.email + "') OR (t.email like '%" + objTeacher.email + "%' )) " + objTeacher.search_operator +
-                    "(('' = '" + objTeacher.mobile + "') OR (t.mobile like '%" + objTeacher.mobile + "%' ))) ORDER BY t.name;";
+                    "(('' = '" + objTeacher.mobile + "') OR (t.mobile like '%" + objTeacher.mobile + "%' ))) ORDER BY t.name) as tr group by id";
                 //objDA.ExecuteNonQuery("SET NAMES cp1256");
                 //objDA.ExecuteNonQuery("set character set cp1256");
                 resultTable = objDA.ExecuteDataTable(sqlQuery);
@@ -881,7 +885,7 @@ namespace BusinussLayer
                 }
                 objDA.ExecuteNonQuery(sqlQuery);
 
-                sqlQueryClass = "DELETE FROM teacher_class WHERE teacher_id = " + objTeacher.ID ;
+                sqlQueryClass = "DELETE FROM teacher_class WHERE teacher_id = " + objTeacher.ID;
                 objDA.ExecuteNonQuery(sqlQueryClass);
                 for (int i = 0; i < objTeacher.class_ids.Count; i++)
                 {
@@ -940,7 +944,7 @@ namespace BusinussLayer
                 + "mobile = '" + objSchool.mobile + "', contact_address = '" + objSchool.contact_address + "', "
                 + "email = '" + objSchool.email + "', nationality = '" + objSchool.nationality + "', status = " + objSchool.status + ", "
                 + "site_url = '" + objSchool.siteurl + "', address = '" + objSchool.school_address + "', "
-                + "wilayath = '" + objSchool.wilayath + "', waynumber = '" + objSchool.waynumber + "', "
+                + "wilayath = '" + objSchool.wilayath + "', waynumber = '" + objSchool.waynumber + "',youtube_cert_file = '" + objSchool.youtube_cert_file + "',"
                 + "contact_person = '" + objSchool.contact_person + "', package_id = " + objSchool.package_id + ", "
                 + "logo = '" + objSchool.logo + "', status = " + objSchool.status + ", notes = '" + objSchool.notes + "', "
                 + "register_date = '" + objSchool.register_date.ToString("yyyy-MM-dd") + "', expire_date = '" + objSchool.expire_date.ToString("yyyy-MM-dd") + "'"
@@ -1009,7 +1013,7 @@ namespace BusinussLayer
                 objSchool.search_operator = objSchool.search_operator == null ? " OR " : objSchool.search_operator;
                 DataTable resultTable = new DataTable();
                 string sqlQuery = "SELECT s.id,s.code,s.name,s.site_url,s.address,s.contact_person,s.mobile,s.email,s.phone,s.contact_address, " +
-                    "s.nationality, s.package_id, s.register_date, s.expire_date, s.logo, s.status, s.notes, p.name as package, s.wilayath, s.waynumber " +
+                    "s.nationality, s.package_id, s.register_date, s.expire_date, s.logo, s.status, s.notes, p.name as package, s.wilayath, s.waynumber,s.youtube_cert_file " +
                     "FROM school s INNER JOIN package p ON s.package_id = p.id " +
                     //"WHERE ((('' = '" + objTeacher.code + "') OR (t.code like '%" + objTeacher.code + "%' )) " + objTeacher.search_operator +
                     "WHERE ((0 = " + objSchool.package_id + ") OR (p.id = " + objSchool.package_id + ")) AND" +
@@ -1291,6 +1295,7 @@ namespace BusinussLayer
                 string sqlQuery = "SELECT t.id,t.school_id,t.name " +
                     "FROM teacher t INNER JOIN login lg ON t.id = lg.user_id AND lg.type = 3 " +
                     "WHERE lg.id = " + loginID;
+                resultTable = objDA.ExecuteDataTable(sqlQuery);
                 return resultTable;
             }
             catch (Exception ex)
@@ -1886,7 +1891,7 @@ namespace BusinussLayer
                 DataTable resultTable = new DataTable();
                 string sqlQuery = "SELECT GROUP_CONCAT(em.email SEPARATOR ',') as emails FROM " +
                     "(SELECT s.email,s.class_id from student s INNER JOIN class c ON s.class_id = c.id WHERE s.class_id IN (" + studentClasses + ") UNION  " +
-                    " SELECT t.email,t.class_id FROM teacher t INNER JOIN class c ON t.class_id = c.id WHERE t.class_id IN (" + teacherClasses + ") ) as em;  ";
+                    " SELECT t.email,t.class_id FROM teacher t INNER JOIN teacher_class tc ON tc.class_id = t.id WHERE tc.class_id IN (" + teacherClasses + ") ) as em;  ";
                 resultTable = objDA.ExecuteDataTable(sqlQuery);
 
                 for (int i = 0; i < resultTable.Rows.Count; i++)
@@ -1979,7 +1984,7 @@ namespace BusinussLayer
             //    " SELECT t.email,t.class_id,l.google_regid FROM teacher t INNER JOIN class c ON t.class_id = c.id INNER JOIN login l ON l.user_id = t.id AND l.type = 4 WHERE t.class_id IN (" + teacherClasses + ") ) as em;  ";
 
             string sqlQuery = "SELECT s.email,s.class_id,l.google_regid from student s INNER JOIN class c ON s.class_id = c.id INNER JOIN login l ON l.user_id = s.id AND l.type = 4 WHERE s.class_id IN (" + studentClasses + ") UNION  " +
-                " SELECT t.email,t.class_id,l.google_regid FROM teacher t INNER JOIN class c ON t.class_id = c.id INNER JOIN login l ON l.user_id = t.id AND l.type = 3 WHERE t.class_id IN (" + teacherClasses + ") ";
+                " SELECT t.email,t.class_id,l.google_regid FROM teacher t INNER JOIN teacher_class tc ON tc.teacher_id = t.id INNER JOIN login l ON l.user_id = t.id AND l.type = 3 WHERE tc.class_id IN (" + teacherClasses + ") ";
             resultTable = objDA.ExecuteDataTable(sqlQuery);
 
             string googleSenderID = "";
@@ -2117,6 +2122,150 @@ namespace BusinussLayer
                 chars[i] = _allowedChars[(int)((_allowedChars.Length) * randNum.NextDouble())];
             }
             return new string(chars);
+        }
+
+        public DataTable searchLibrary(eMallEntity.library objLib)
+        {
+            try
+            {
+                eMallDA objDA = new eMallDA();
+                DataTable resultTable = new DataTable();
+
+                string sqlQuery = "SELECT l.id, l.std, l.school_id, l.subject_id, l.title, l.file_path, l.file_type, l.status, s.subject " +
+                    " FROM library l INNER JOIN lib_subject s ON l.subject_id = s.id AND l.school_id = s.school_id " +
+                    //" INNER JOIN lib_lesson ls ON l.lesson_id = ls.id " +
+                    " WHERE ((0 = " + objLib.school_id + ") OR (l.school_id = " + objLib.school_id + ")) AND " +
+                    " (('All' = '" + objLib.std + "') OR (l.std = '" + objLib.std + "'))";
+
+                resultTable = objDA.ExecuteDataTable(sqlQuery);
+                return resultTable;
+            }
+            catch (Exception ex)
+            {
+                logErrors("searchLibrary", ex.GetType().ToString(), ex.Message);
+                return null;
+            }
+        }
+
+        public DataTable getLibrarySubjects(string std, int school_id)
+        {
+            try
+            {
+                eMallDA objDA = new eMallDA();
+                DataTable resultTable = new DataTable();
+
+                string sqlQuery = "SELECT id, school_id, std, subject, status FROM lib_subject " +
+                    "WHERE std = '" + std + "' AND school_id = " + school_id;
+                resultTable = objDA.ExecuteDataTable(sqlQuery);
+                return resultTable;
+            }
+            catch (Exception ex)
+            {
+                logErrors("getLibrarySubjects", ex.GetType().ToString(), ex.Message);
+                return null;
+            }
+        }
+
+        public DataTable getLibraryLessons(int subjectID)
+        {
+            try
+            {
+                eMallDA objDA = new eMallDA();
+                DataTable resultTable = new DataTable();
+
+                string sqlQuery = "Select id,school_id,subject_id,lesson from lib_lesson Where subject_id = " + subjectID;
+
+                resultTable = objDA.ExecuteDataTable(sqlQuery);
+                return resultTable;
+            }
+            catch (Exception ex)
+            {
+                logErrors("getLibraryLessons", ex.GetType().ToString(), ex.Message);
+                return null;
+            }
+        }
+
+        public DataTable getStds(eMallEntity.Class objClass)
+        {
+            try
+            {
+                eMallDA objDA = new eMallDA();
+                DataTable resultTable = new DataTable();
+
+                string sqlQuery = "SELECT DISTINCT school_id, std FROM class " +
+                    "WHERE ((0 = " + objClass.ID + ") OR (id = " + objClass.ID + ")) AND " +
+                    "((0 = " + objClass.school_id + ") OR (school_id = " + objClass.school_id + ")) ; ";
+                resultTable = objDA.ExecuteDataTable(sqlQuery);
+                return resultTable;
+            }
+            catch (Exception ex)
+            {
+                logErrors("searchEvents", ex.GetType().ToString(), ex.Message);
+                return null;
+            }
+        }
+        
+        public string insertLibraryFile(eMallEntity.library objLib)
+        {
+            eMallDA objDA = new eMallDA();
+            string returnValue = string.Empty;
+            string sqlQuery = string.Empty;
+            try
+            {
+                int status = objLib.status ? 1 : 0;
+                if (objLib.ID == 0)
+                {
+                    sqlQuery = "INSERT INTO library (school_id, std, subject_id, title,file_path,created_by,created_type,file_type,status,created_date) " +
+                            " VALUES(" + "'" + objLib.school_id + "','" + objLib.std + "'," + objLib.subjectID + ",'" + objLib.title + "','" + objLib.filepath + "'," + objLib.createdBy + "," + objLib.createdByType + "," +
+                            "'" + objLib.filetype + "'," + status + ",now())";
+                }
+                else
+                {
+                    sqlQuery = "UPDATE library SET school_id = " + objLib.school_id + ",std = '" + objLib.std + "', subject_id = '" + objLib.subjectID + "', "
+                        + "title = '" + objLib.title + "',file_path = '" + objLib.filepath + "', status = " + status + ",youtube_id = '"  + objLib.videoUniqueID + "',"
+                        + "file_type = '" + objLib.filetype + "', modified_by =" + objLib.createdBy + ", modified_type =" + objLib.createdByType + ", modified_date = now()"
+                        + " WHERE ID = " + objLib.ID;
+                }
+                objDA.ExecuteNonQuery(sqlQuery);
+                return "success";
+            }
+            catch (Exception ex)
+            {
+                return "error";
+            }
+        }
+
+        public string DeleteLibrary(int libID)
+        {
+            try
+            {
+                eMallDA objDA = new eMallDA();
+                string sqlQuery = string.Empty;
+                sqlQuery = "DELETE FROM library WHERE ID = " + libID;
+                objDA.ExecuteNonQuery(sqlQuery);
+                return "success";
+            }
+            catch (Exception ex)
+            {
+                return "error : " + ex.Message;
+            }
+        }
+
+        public DataTable getSchoolYoutubeCertFile(int school_id)
+        {
+            try
+            {
+                eMallDA objDA = new eMallDA();
+                DataTable resultTable = new DataTable();
+                string sqlQuery = "SELECT s.youtube_cert_file FROM school s WHERE s.id = " + school_id;
+                resultTable = objDA.ExecuteDataTable(sqlQuery);
+                return resultTable;
+            }
+            catch (Exception ex)
+            {
+                logErrors("searchSchool", ex.GetType().ToString(), ex.Message);
+                return null;
+            }
         }
     }
 }

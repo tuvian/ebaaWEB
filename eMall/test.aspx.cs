@@ -25,27 +25,27 @@ namespace eMall
         {
             //fillSchoolCodes();
             //fillClassForStudents();
-            DataTable dt = CreateDataTable();
-            BuildTree(dt, tvTest, true);
+            //DataTable dt = CreateDataTable();
+            //BuildTree(dt, tvTest, true);
         }
 
         private void createListview()
         {
-            DataTable table = new DataTable();
-            table.Columns.Add("Dosage", typeof(int));
-            table.Columns.Add("Drug", typeof(string));
-            table.Columns.Add("Patient", typeof(string));
-            table.Columns.Add("Date", typeof(DateTime));
+            //DataTable table = new DataTable();
+            //table.Columns.Add("Dosage", typeof(int));
+            //table.Columns.Add("Drug", typeof(string));
+            //table.Columns.Add("Patient", typeof(string));
+            //table.Columns.Add("Date", typeof(DateTime));
 
-            // Here we add five DataRows.
-            table.Rows.Add(25, "Indocin", "David", DateTime.Now);
-            table.Rows.Add(50, "Enebrel", "Sam", DateTime.Now);
-            table.Rows.Add(10, "Hydralazine", "Christoff", DateTime.Now);
-            table.Rows.Add(21, "Combivent", "Janet", DateTime.Now);
-            table.Rows.Add(100, "Dilantin", "Melanie", DateTime.Now);
+            //// Here we add five DataRows.
+            //table.Rows.Add(25, "Indocin", "David", DateTime.Now);
+            //table.Rows.Add(50, "Enebrel", "Sam", DateTime.Now);
+            //table.Rows.Add(10, "Hydralazine", "Christoff", DateTime.Now);
+            //table.Rows.Add(21, "Combivent", "Janet", DateTime.Now);
+            //table.Rows.Add(100, "Dilantin", "Melanie", DateTime.Now);
 
-            tvTest.DataSource = table;
-            tvTest.DataBind();
+            //tvTest.DataSource = table;
+            //tvTest.DataBind();
         }
 
 
@@ -331,17 +331,17 @@ namespace eMall
 
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
-            string ids = "";
-            TreeNodeCollection nodes = tvTest.Nodes;
-            foreach (TreeNode n in nodes)
-            {
-                if (n.Selected)
-                    ids += n.Value;
-                if (n.Checked)
-                    ids += n.Value;
-                //n.Checked = true;
-                //n.Selected = true;
-            }
+            //string ids = "";
+            //TreeNodeCollection nodes = tvTest.Nodes;
+            //foreach (TreeNode n in nodes)
+            //{
+            //    if (n.Selected)
+            //        ids += n.Value;
+            //    if (n.Checked)
+            //        ids += n.Value;
+            //    //n.Checked = true;
+            //    //n.Selected = true;
+            //}
         }
 
         protected void tvTest_TreeNodeCheckChanged(object sender, TreeNodeEventArgs e)

@@ -421,17 +421,17 @@
                                 </td>
                             </tr>
                             <tr>
-                                    <td align="left" class="adminLabel">
-                                        <asp:Label runat="server" ID="Label2" Text="Bus"></asp:Label>
-                                    </td>
-                                    <td align="left">
-                                        <asp:DropDownList ID="ddlBus" runat="server" CssClass="adminCombo" >
-                                        </asp:DropDownList>
-                                        <%--AutoPostBack="true" OnSelectedIndexChanged="ddlBus_SelectedIndexChanged"
+                                <td align="left" class="adminLabel">
+                                    <asp:Label runat="server" ID="Label2" Text="Bus"></asp:Label>
+                                </td>
+                                <td align="left">
+                                    <asp:DropDownList ID="ddlBus" runat="server" CssClass="adminCombo">
+                                    </asp:DropDownList>
+                                    <%--AutoPostBack="true" OnSelectedIndexChanged="ddlBus_SelectedIndexChanged"
                                             <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="ddlBus"
                                             ErrorMessage="* Required" ValidationGroup="items" ToolTip="Please select a Bus" InitialValue="0" />--%>
-                                    </td>
-                                </tr>
+                                </td>
+                            </tr>
                         </table>
                     </div>
                 </td>

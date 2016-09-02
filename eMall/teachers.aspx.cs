@@ -32,21 +32,6 @@ namespace eMall
                 filldepartmentsearch();
                 fillSchoolCodes();
                 fillClass();
-
-
-                //TreeView1.Nodes.Add(new TreeNode("Fruits", "Fruits"));
-                //TreeView1.Nodes[0].ChildNodes.Add(new TreeNode("Mango", "Mango"));
-                //TreeView1.Nodes[0].ChildNodes.Add(new TreeNode("Apple", "Apple"));
-                //TreeView1.Nodes[0].ChildNodes.Add(new TreeNode("Pineapple", "Pineapple"));
-                //TreeView1.Nodes[0].ChildNodes.Add(new TreeNode("Orange", "Orange"));
-                //TreeView1.Nodes[0].ChildNodes.Add(new TreeNode("Grapes", "Grapes"));
-
-                //TreeView1.Nodes.Add(new TreeNode("Vegetables", "Vegetables"));
-                //TreeView1.Nodes[1].ChildNodes.Add(new TreeNode("Carrot", "Carrot"));
-                //TreeView1.Nodes[1].ChildNodes.Add(new TreeNode("Cauliflower", "Cauliflower"));
-                //TreeView1.Nodes[1].ChildNodes.Add(new TreeNode("Potato", "Potato"));
-                //TreeView1.Nodes[1].ChildNodes.Add(new TreeNode("Tomato", "Tomato"));
-                //TreeView1.Nodes[1].ChildNodes.Add(new TreeNode("Onion", "Onion"));
             }
         }
 
@@ -180,7 +165,7 @@ namespace eMall
                             {
                                 if (drDiv["std"].ToString() == parentNode.Text)
                                 {
-                                    TreeNode child = new TreeNode(drDiv["division"].ToString(), dr["id"].ToString());
+                                    TreeNode child = new TreeNode(drDiv["division"].ToString(), drDiv["id"].ToString());
                                     parentNode.ChildNodes.Add(child);
                                 }
                             }
